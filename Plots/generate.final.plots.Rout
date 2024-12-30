@@ -1,0 +1,518 @@
+
+R version 4.3.1 (2023-06-16) -- "Beagle Scouts"
+Copyright (C) 2023 The R Foundation for Statistical Computing
+Platform: x86_64-redhat-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+[Previously saved workspace restored]
+
+> setwd("/home/bmb191/math5376D/Final.Project/Output.Files")
+> 
+> create_distance_plots <- function(corr_type, file_suffix) {
++   if (corr_type == "Absolute") { output_path_corr <- "" }
++   else {output_path_corr <- paste0(tolower(corr_type),".") }
++   pdf(paste0("Plots/BRCA.",output_path_corr,"highly.correlated.distances.boxplot",file_suffix,".pdf"))
++   layout(matrix(c(1,2,3,1,4,5), ncol=2, nrow=3), heights=c(1,1,14), widths=c(16,16))
++   par(mai=rep(0,4))
++   plot.new()
++   text(0.5,0.5,paste("Fourth Root Distances of BRCA",corr_type,"Highly Correlated Data"),cex=1.5,font=1)
++   plot.new()
++   text(0.5,0.5,"BRCA Alive",cex=1,font=1)
++   par(mai=c(0.3,0.3,0,0.15))
++   boxplot(
++     BRCA_an^(1/4), 
++     BRCA_at^(1/4),
++     names=c("Normal","Tumor")
++   )
++   par(mai=rep(0,4))
++   plot.new()
++   text(0.5,0.5,"BRCA Dead",cex=1,font=1)
++   par(mai=c(0.3,0.15,0,0.3))
++   boxplot(
++     BRCA_dn^(1/4), 
++     BRCA_dt^(1/4),
++     names=c("Normal","Tumor")
++   )
++   dev.off()
++   
++   pdf(paste0("Plots/BRCA.",output_path_corr,"highly.correlated.distances.density.plot",file_suffix,".pdf"))
++   layout(matrix(c(1,2,3,4,1,5,6,4), ncol=2, nrow=4), heights=c(1,1,14,1), widths=c(16,16))
++   par(mai=rep(0,4))
++   plot.new()
++   text(0.5,0.5,paste("Fourth Root Distances of BRCA",corr_type,"Highly Correlated Data"),cex=1.5,font=1)
++   plot.new()
++   text(0.5,0.5,"BRCA Alive",cex=1,font=1)
++   par(mai=c(0.3,0.3,0,0.15))
++   plot(
++     density((BRCA_an)^(1/4)),
++     col="blue",
++     ylim=c(0,.03),
++     main=NA
++   )
++   lines(density((BRCA_at)^(1/4)), col="red")
++   par(mai=rep(0,4))
++   plot.new()
++   legend(x="center", ncol=2,legend=c("Normal","Tumor"),
++          fill=c("blue","red"), bty="n")
++   plot.new()
++   text(0.5,0.5,"BRCA Dead",cex=1,font=1)
++   par(mai=c(0.3,0.15,0,0.3))
++   plot(
++     density((BRCA_dn)^(1/4)),
++     col="blue",
++     ylim=c(0,.03),
++     main=NA
++   )
++   lines(density((BRCA_dt)^(1/4)), col="red")
++   dev.off()
++   
++   pdf(paste0("Plots/UCEC.",output_path_corr,"highly.correlated.distances.boxplot",file_suffix,".pdf"))
++   layout(matrix(c(1,2,3,1,4,5), ncol=2, nrow=3), heights=c(1,1,14), widths=c(16,16))
++   par(mai=rep(0,4))
++   plot.new()
++   text(0.5,0.5,"Fourth Root Distances of UCEC Highly Correlated Data",cex=1.5,font=1)
++   plot.new()
++   text(0.5,0.5,"UCEC Alive",cex=1,font=1)
++   par(mai=c(0.3,0.3,0,0.15))
++   boxplot(
++     UCEC_an^(1/4), 
++     UCEC_at^(1/4),
++     names=c("Normal","Tumor")
++   )
++   par(mai=rep(0,4))
++   plot.new()
++   text(0.5,0.5,"UCEC Dead",cex=1,font=1)
++   par(mai=c(0.3,0.15,0,0.3))
++   boxplot(
++     UCEC_dn^(1/4), 
++     UCEC_dt^(1/4),
++     names=c("Normal","Tumor")
++   )
++   dev.off()
++   
++   pdf(paste0("Plots/UCEC.",output_path_corr,"highly.correlated.distances.density.plot",file_suffix,".pdf"))
++   layout(matrix(c(1,2,3,4,1,5,6,4), ncol=2, nrow=4), heights=c(1,1,14,1), widths=c(16,16))
++   par(mai=rep(0,4))
++   plot.new()
++   text(0.5,0.5,"Fourth Root Distances of UCEC Highly Correlated Data",cex=1.5,font=1)
++   plot.new()
++   text(0.5,0.5,"UCEC Alive",cex=1,font=1)
++   par(mai=c(0.3,0.3,0,0.15))
++   plot(
++     density((UCEC_an)^(1/4)),
++     col="blue",
++     ylim=c(0,.03),
++     main=NA
++   )
++   lines(density((UCEC_at)^(1/4)), col="red")
++   par(mai=rep(0,4))
++   plot.new()
++   legend(x="center", ncol=2,legend=c("Normal","Tumor"),
++          fill=c("blue","red"), bty="n")
++   plot.new()
++   text(0.5,0.5,"UCEC Dead",cex=1,font=1)
++   par(mai=c(0.3,0.15,0,0.3))
++   plot(
++     density((UCEC_dn)^(1/4)),
++     col="blue",
++     ylim=c(0,.03),
++     main=NA
++   )
++   lines(density((UCEC_dt)^(1/4)), col="red")
++   dev.off()
++ }
+> 
+> create_count_plots <- function(corr_type, file_suffix) {
++   if (corr_type == "Absolute") { output_path_corr <- "" }
++   else {output_path_corr <- paste0(tolower(corr_type),".") }
++   pdf(paste0("Plots/BRCA.",output_path_corr,"highly.correlated.counts.boxplot",file_suffix,".pdf"))
++   layout(matrix(c(1,2,3,1,4,5), ncol=2, nrow=3), heights=c(1,1,14), widths=c(16,16))
++   par(mai=rep(0,4))
++   plot.new()
++   text(0.5,0.5,paste0("Fourth Root Counts of BRCA",corr_type,"Highly Correlated Data"),cex=1.5,font=1)
++   plot.new()
++   text(0.5,0.5,"BRCA Alive",cex=1,font=1)
++   par(mai=c(0.3,0.3,0,0.15))
++   boxplot(
++     BRCA_an^(1/4), 
++     BRCA_at^(1/4),
++     names=c("Normal","Tumor"),
++     ylim=c(0,5)
++   )
++   par(mai=rep(0,4))
++   plot.new()
++   text(0.5,0.5,"BRCA Dead",cex=1,font=1)
++   par(mai=c(0.3,0.15,0,0.3))
++   boxplot(
++     BRCA_dn^(1/4), 
++     BRCA_dt^(1/4),
++     names=c("Normal","Tumor"),
++     ylim=c(0,5)
++   )
++   dev.off()
++   
++   pdf(paste0("Plots/BRCA.",output_path_corr,"highly.correlated.counts.density.plot",file_suffix,".pdf"))
++   layout(matrix(c(1,2,3,4,1,5,6,4), ncol=2, nrow=4), heights=c(1,1,14,1), widths=c(16,16))
++   par(mai=rep(0,4))
++   plot.new()
++   text(0.5,0.5,paste0("Fourth Root Counts of BRCA",corr_type,"Highly Correlated Data"),cex=1.5,font=1)
++   plot.new()
++   text(0.5,0.5,"BRCA Alive",cex=1,font=1)
++   par(mai=c(0.3,0.3,0,0.15))
++   plot(
++     density((BRCA_an)^(1/4)),
++     col="blue",
++     main=NA,
++     ylim=c(0,3)
++   )
++   lines(density((BRCA_at)^(1/4)), col="red")
++   par(mai=rep(0,4))
++   plot.new()
++   legend(x="center", ncol=2,legend=c("Normal","Tumor"),
++          fill=c("blue","red"), bty="n")
++   plot.new()
++   text(0.5,0.5,"BRCA Dead",cex=1,font=1)
++   par(mai=c(0.3,0.15,0,0.3))
++   plot(
++     density((BRCA_dn)^(1/4)),
++     col="blue",
++     main=NA,
++     ylim=c(0,3)
++   )
++   lines(density((BRCA_dt)^(1/4)), col="red")
++   dev.off()
++   
++   
++   pdf(paste0("Plots/UCEC.",output_path_corr,"highly.correlated.counts.boxplot",file_suffix,".pdf"))
++   layout(matrix(c(1,2,3,1,4,5), ncol=2, nrow=3), heights=c(1,1,14), widths=c(16,16))
++   par(mai=rep(0,4))
++   plot.new()
++   text(0.5,0.5,paste0("Fourth Root Counts of",corr_type,"UCEC Highly Correlated Data"),cex=1.5,font=1)
++   plot.new()
++   text(0.5,0.5,"UCEC Alive",cex=1,font=1)
++   par(mai=c(0.3,0.3,0,0.15))
++   boxplot(
++     UCEC_an^(1/4), 
++     UCEC_at^(1/4),
++     names=c("Normal","Tumor")
++   )
++   par(mai=rep(0,4))
++   plot.new()
++   text(0.5,0.5,"UCEC Dead",cex=1,font=1)
++   par(mai=c(0.3,0.15,0,0.3))
++   boxplot(
++     UCEC_dn^(1/4), 
++     UCEC_dt^(1/4),
++     names=c("Normal","Tumor")
++   )
++   dev.off()
++   
++   
++   pdf(paste0("Plots/UCEC.",output_path_corr,"highly.correlated.counts.density.plot",file_suffix,".pdf"))
++   layout(matrix(c(1,2,3,4,1,5,6,4), ncol=2, nrow=4), heights=c(1,1,14,1), widths=c(16,16))
++   par(mai=rep(0,4))
++   plot.new()
++   text(0.5,0.5,paste0("Fourth Root Counts of UCEC",corr_type,"Highly Correlated Data"),cex=1.5,font=1)
++   plot.new()
++   text(0.5,0.5,"UCEC Alive",cex=1,font=1)
++   par(mai=c(0.3,0.3,0,0.15))
++   plot(
++     density((UCEC_an)^(1/4)),
++     col="blue",
++     ylim=c(0,5),
++     main=NA
++   )
++   lines(density((UCEC_at)^(1/4)), col="red")
++   par(mai=rep(0,4))
++   plot.new()
++   legend(x="center", ncol=2,legend=c("Normal","Tumor"),
++          fill=c("blue","red"), bty="n")
++   plot.new()
++   text(0.5,0.5,"UCEC Dead",cex=1,font=1)
++   par(mai=c(0.3,0.15,0,0.3))
++   plot(
++     density((UCEC_dn)^(1/4)),
++     col="blue",
++     ylim=c(0,5),
++     main=NA
++   )
++   lines(density((UCEC_dt)^(1/4)), col="red")
++   dev.off()
++ }
+> 
+> get_summaries <- function() {
++   print(summary(BRCA_an))
++   print(summary(BRCA_at))
++   print(summary(BRCA_dn))
++   print(summary(BRCA_dt))
++   print(summary(UCEC_an))
++   print(summary(UCEC_at))
++   print(summary(UCEC_dn))
++   print(summary(UCEC_dt))
++ }
+> 
+> BRCA_an <- as.numeric(unlist(read.table("Correlation.Distances/BRCA.alive.normal.high.corr.distances.txt", header=FALSE)))
+> BRCA_at <- as.numeric(unlist(read.table("Correlation.Distances/BRCA.alive.tumor.high.corr.distances.txt", header=FALSE)))
+> BRCA_dn <- as.numeric(unlist(read.table("Correlation.Distances/BRCA.dead.normal.high.corr.distances.txt", header=FALSE)))
+> BRCA_dt <- as.numeric(unlist(read.table("Correlation.Distances/BRCA.dead.tumor.high.corr.distances.txt", header=FALSE)))
+> 
+> UCEC_an <- as.numeric(unlist(read.table("Correlation.Distances/UCEC.alive.normal.high.corr.distances.txt", header=FALSE)))
+> UCEC_at <- as.numeric(unlist(read.table("Correlation.Distances/UCEC.alive.tumor.high.corr.distances.txt", header=FALSE)))
+> UCEC_dn <- as.numeric(unlist(read.table("Correlation.Distances/UCEC.dead.normal.high.corr.distances.txt", header=FALSE)))
+> UCEC_dt <- as.numeric(unlist(read.table("Correlation.Distances/UCEC.dead.tumor.high.corr.distances.txt", header=FALSE)))
+> 
+> create_distance_plots("Absolute","")
+null device 
+          1 
+> get_summaries()
+     Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
+        2  18274758  48270973  53796088  86874196 152125211 
+     Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
+        2    691966  16005015  31836764  52615632 149861729 
+     Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
+        2  18142761  47092166  51862141  83237542 152606431 
+     Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
+        2   2614341  19763148  27133353  41961302 151265495 
+     Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
+        2  16228348  43834423  50791071  82399065 151989226 
+     Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
+        2  10874492  35550700  44705531  76350572 152683347 
+     Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
+        2  20840074  48323212  54268338  84628403 152815683 
+     Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
+        2  17782630  41982198  49505202  78778828 152787875 
+> 
+> BRCA_an <- as.numeric(unlist(read.table("Correlation.Distances/positive.BRCA.alive.normal.high.corr.distances.txt", header=FALSE)))
+> BRCA_at <- as.numeric(unlist(read.table("Correlation.Distances/positive.BRCA.alive.tumor.high.corr.distances.txt", header=FALSE)))
+> BRCA_dn <- as.numeric(unlist(read.table("Correlation.Distances/positive.BRCA.dead.normal.high.corr.distances.txt", header=FALSE)))
+> BRCA_dt <- as.numeric(unlist(read.table("Correlation.Distances/positive.BRCA.dead.tumor.high.corr.distances.txt", header=FALSE)))
+> 
+> UCEC_an <- as.numeric(unlist(read.table("Correlation.Distances/positive.UCEC.alive.normal.high.corr.distances.txt", header=FALSE)))
+> UCEC_at <- as.numeric(unlist(read.table("Correlation.Distances/positive.UCEC.alive.tumor.high.corr.distances.txt", header=FALSE)))
+> UCEC_dn <- as.numeric(unlist(read.table("Correlation.Distances/positive.UCEC.dead.normal.high.corr.distances.txt", header=FALSE)))
+> UCEC_dt <- as.numeric(unlist(read.table("Correlation.Distances/positive.UCEC.dead.tumor.high.corr.distances.txt", header=FALSE)))
+> 
+> create_distance_plots("Positive","")
+null device 
+          1 
+> get_summaries()
+     Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
+        2  18264368  48336806  53805136  86896672 152125211 
+     Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
+        2    697428  16060507  31877907  52622340 149861729 
+     Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
+        2  18108747  47049731  51816187  83194572 152606431 
+     Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
+        2   2607466  19759107  27131784  41961104 151265495 
+     Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
+        2  16029334  43350608  50588998  82321992 151989226 
+     Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
+        2  10800288  35428558  44652243  76350700 152683347 
+     Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
+        2  20365988  47878948  53738824  84093186 152815683 
+     Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
+        2  16904833  39338840  47709928  75087228 152784911 
+> 
+> BRCA_an <- as.numeric(unlist(read.table("Correlation.Distances/negative.BRCA.alive.normal.high.corr.distances.txt", header=FALSE)))
+> BRCA_at <- as.numeric(unlist(read.table("Correlation.Distances/negative.BRCA.alive.tumor.high.corr.distances.txt", header=FALSE)))
+> BRCA_dn <- as.numeric(unlist(read.table("Correlation.Distances/negative.BRCA.dead.normal.high.corr.distances.txt", header=FALSE)))
+> BRCA_dt <- as.numeric(unlist(read.table("Correlation.Distances/negative.BRCA.dead.tumor.high.corr.distances.txt", header=FALSE)))
+> 
+> UCEC_an <- as.numeric(unlist(read.table("Correlation.Distances/negative.UCEC.alive.normal.high.corr.distances.txt", header=FALSE)))
+> UCEC_at <- as.numeric(unlist(read.table("Correlation.Distances/negative.UCEC.alive.tumor.high.corr.distances.txt", header=FALSE)))
+> UCEC_dn <- as.numeric(unlist(read.table("Correlation.Distances/negative.UCEC.dead.normal.high.corr.distances.txt", header=FALSE)))
+> UCEC_dt <- as.numeric(unlist(read.table("Correlation.Distances/negative.UCEC.dead.tumor.high.corr.distances.txt", header=FALSE)))
+> 
+> create_distance_plots("Negative","")
+null device 
+          1 
+> get_summaries()
+     Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
+    21054  22295914  44642549  52587792  83281525 150859388 
+     Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
+    15984     16149     16808   9980420   2015220 106761687 
+     Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
+     9187  22144418  51916754  59266816 100145079 150862039 
+    Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
+   17039  4321951 27348624 28187733 46307869 97749532 
+     Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
+    19255  24002548  54960969  58444104  88531525 150797717 
+     Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
+     6150  16075028  41028693  48384042  75712467 144351775 
+     Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
+        2  21551775  49004479  55113942  85476566 152797905 
+     Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
+      250  20460444  49054474  55106329  87652372 152787875 
+> 
+> BRCA_an <- as.numeric(unlist(read.table("Correlation.Counts/BRCA.alive.normal.high.corr.cnts.txt", header=FALSE)))
+> BRCA_at <- as.numeric(unlist(read.table("Correlation.Counts/BRCA.alive.tumor.high.corr.cnts.txt", header=FALSE)))
+> BRCA_dn <- as.numeric(unlist(read.table("Correlation.Counts/BRCA.dead.normal.high.corr.cnts.txt", header=FALSE)))
+> BRCA_dt <- as.numeric(unlist(read.table("Correlation.Counts/BRCA.dead.tumor.high.corr.cnts.txt", header=FALSE)))
+> 
+> UCEC_an <- as.numeric(unlist(read.table("Correlation.Counts/UCEC.alive.normal.high.corr.cnts.txt", header=FALSE)))
+> UCEC_at <- as.numeric(unlist(read.table("Correlation.Counts/UCEC.alive.tumor.high.corr.cnts.txt", header=FALSE)))
+> UCEC_dn <- as.numeric(unlist(read.table("Correlation.Counts/UCEC.dead.normal.high.corr.cnts.txt", header=FALSE)))
+> UCEC_dt <- as.numeric(unlist(read.table("Correlation.Counts/UCEC.dead.tumor.high.corr.cnts.txt", header=FALSE)))
+> 
+> create_count_plots("Absolute","")
+null device 
+          1 
+> get_summaries()
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+   0.00    0.00    0.00   16.74    1.00  573.00 
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+  0.000   0.000   0.000   2.466   1.000 142.000 
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+    0.0     0.0     1.0    15.7     8.0   449.0 
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+   0.00    0.00    3.00   11.48   11.75  227.00 
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+  0.000   0.000   1.000   2.955   3.000  82.000 
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+   0.00    0.00    2.00   12.99   10.00  270.00 
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+   83.0   291.0   400.0   422.5   523.0   877.0 
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+      1      62     123     184     221     858 
+> 
+> BRCA_an <- as.numeric(unlist(read.table("Correlation.Counts/negative.BRCA.alive.normal.high.corr.cnts.txt", header=FALSE)))
+> BRCA_at <- as.numeric(unlist(read.table("Correlation.Counts/negative.BRCA.alive.tumor.high.corr.cnts.txt", header=FALSE)))
+> BRCA_dn <- as.numeric(unlist(read.table("Correlation.Counts/negative.BRCA.dead.normal.high.corr.cnts.txt", header=FALSE)))
+> BRCA_dt <- as.numeric(unlist(read.table("Correlation.Counts/negative.BRCA.dead.tumor.high.corr.cnts.txt", header=FALSE)))
+> 
+> UCEC_an <- as.numeric(unlist(read.table("Correlation.Counts/negative.UCEC.alive.normal.high.corr.cnts.txt", header=FALSE)))
+> UCEC_at <- as.numeric(unlist(read.table("Correlation.Counts/negative.UCEC.alive.tumor.high.corr.cnts.txt", header=FALSE)))
+> UCEC_dn <- as.numeric(unlist(read.table("Correlation.Counts/negative.UCEC.dead.normal.high.corr.cnts.txt", header=FALSE)))
+> UCEC_dt <- as.numeric(unlist(read.table("Correlation.Counts/negative.UCEC.dead.tumor.high.corr.cnts.txt", header=FALSE)))
+> 
+> create_count_plots("Positive","")
+null device 
+          1 
+> get_summaries()
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+ 0.0000  0.0000  0.0000  0.1245  0.0000 53.0000 
+    Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
+0.000000 0.000000 0.000000 0.004633 0.000000 7.000000 
+     Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
+  0.00000   0.00000   0.00000   0.09686   0.00000 143.00000 
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+0.00000 0.00000 0.00000 0.01706 0.00000 8.00000 
+    Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
+ 0.00000  0.00000  0.00000  0.07602  0.00000 19.00000 
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+ 0.0000  0.0000  0.0000  0.1855  0.0000 77.0000 
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+   16.0    88.0   131.0   162.7   204.0   681.0 
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+    7.0    60.0   115.0   161.4   189.0  1679.0 
+> 
+> BRCA_an <- as.numeric(unlist(read.table("Correlation.Counts/negative.BRCA.alive.normal.high.corr.cnts.txt", header=FALSE)))
+> BRCA_at <- as.numeric(unlist(read.table("Correlation.Counts/negative.BRCA.alive.tumor.high.corr.cnts.txt", header=FALSE)))
+> BRCA_dn <- as.numeric(unlist(read.table("Correlation.Counts/negative.BRCA.dead.normal.high.corr.cnts.txt", header=FALSE)))
+> BRCA_dt <- as.numeric(unlist(read.table("Correlation.Counts/negative.BRCA.dead.tumor.high.corr.cnts.txt", header=FALSE)))
+> 
+> UCEC_an <- as.numeric(unlist(read.table("Correlation.Counts/negative.UCEC.alive.normal.high.corr.cnts.txt", header=FALSE)))
+> UCEC_at <- as.numeric(unlist(read.table("Correlation.Counts/negative.UCEC.alive.tumor.high.corr.cnts.txt", header=FALSE)))
+> UCEC_dn <- as.numeric(unlist(read.table("Correlation.Counts/negative.UCEC.dead.normal.high.corr.cnts.txt", header=FALSE)))
+> UCEC_dt <- as.numeric(unlist(read.table("Correlation.Counts/negative.UCEC.dead.tumor.high.corr.cnts.txt", header=FALSE)))
+> 
+> create_count_plots("Negative","")
+null device 
+          1 
+> get_summaries()
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+ 0.0000  0.0000  0.0000  0.1245  0.0000 53.0000 
+    Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
+0.000000 0.000000 0.000000 0.004633 0.000000 7.000000 
+     Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
+  0.00000   0.00000   0.00000   0.09686   0.00000 143.00000 
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+0.00000 0.00000 0.00000 0.01706 0.00000 8.00000 
+    Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
+ 0.00000  0.00000  0.00000  0.07602  0.00000 19.00000 
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+ 0.0000  0.0000  0.0000  0.1855  0.0000 77.0000 
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+   16.0    88.0   131.0   162.7   204.0   681.0 
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+    7.0    60.0   115.0   161.4   189.0  1679.0 
+> 
+> BRCA_an <- as.numeric(unlist(read.table("Correlation.Counts/negative.BRCA.alive.normal.high.corr.cnts.txt", header=FALSE)))
+> BRCA_at <- as.numeric(unlist(read.table("Correlation.Counts/negative.BRCA.alive.tumor.high.corr.cnts.txt", header=FALSE)))
+> BRCA_dn <- as.numeric(unlist(read.table("Correlation.Counts/negative.BRCA.dead.normal.high.corr.cnts.txt", header=FALSE)))
+> BRCA_dt <- as.numeric(unlist(read.table("Correlation.Counts/negative.BRCA.dead.tumor.high.corr.cnts.txt", header=FALSE)))
+> 
+> UCEC_an <- as.numeric(unlist(read.table("Correlation.Counts/negative.UCEC.alive.normal.high.corr.cnts.txt", header=FALSE)))
+> UCEC_at <- as.numeric(unlist(read.table("Correlation.Counts/negative.UCEC.alive.tumor.high.corr.cnts.txt", header=FALSE)))
+> UCEC_dn <- as.numeric(unlist(read.table("Correlation.Counts/negative.UCEC.dead.normal.high.corr.cnts.txt", header=FALSE)))
+> UCEC_dt <- as.numeric(unlist(read.table("Correlation.Counts/negative.UCEC.dead.tumor.high.corr.cnts.txt", header=FALSE)))
+> 
+> create_count_plots("Absolute","")
+null device 
+          1 
+> get_summaries()
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+ 0.0000  0.0000  0.0000  0.1245  0.0000 53.0000 
+    Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
+0.000000 0.000000 0.000000 0.004633 0.000000 7.000000 
+     Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
+  0.00000   0.00000   0.00000   0.09686   0.00000 143.00000 
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+0.00000 0.00000 0.00000 0.01706 0.00000 8.00000 
+    Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
+ 0.00000  0.00000  0.00000  0.07602  0.00000 19.00000 
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+ 0.0000  0.0000  0.0000  0.1855  0.0000 77.0000 
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+   16.0    88.0   131.0   162.7   204.0   681.0 
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+    7.0    60.0   115.0   161.4   189.0  1679.0 
+> 
+> BRCA_an <- as.numeric(unlist(read.table("Correlation.Counts/BRCA.alive.normal.high.corr.with.noise.cnts.txt", header=FALSE)))
+> BRCA_at <- as.numeric(unlist(read.table("Correlation.Counts/BRCA.alive.tumor.high.corr.with.noise.cnts.txt", header=FALSE)))
+> BRCA_dn <- as.numeric(unlist(read.table("Correlation.Counts/BRCA.dead.normal.high.corr.with.noise.cnts.txt", header=FALSE)))
+> BRCA_dt <- as.numeric(unlist(read.table("Correlation.Counts/BRCA.dead.tumor.high.corr.with.noise.cnts.txt", header=FALSE)))
+> 
+> #UCEC_an <- as.numeric(unlist(read.table("Correlation.Counts/UCEC.alive.normal.high.corr.with.noise.cnts.txt", header=FALSE)))
+> #UCEC_at <- as.numeric(unlist(read.table("Correlation.Counts/UCEC.alive.tumor.high.corr.with.noise.cnts.txt", header=FALSE)))
+> #UCEC_dn <- as.numeric(unlist(read.table("Correlation.Counts/UCEC.dead.normal.high.corr.with.noise.cnts.txt", header=FALSE)))
+> #UCEC_dt <- as.numeric(unlist(read.table("Correlation.Counts/UCEC.dead.tumor.high.corr.with.noise.cnts.txt", header=FALSE)))
+> 
+> create_count_plots("Absolute",".with.noise")
+null device 
+          1 
+> get_summaries()
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+   2.00   16.00   23.00   35.98   33.00  579.00 
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+   1.00   17.00   22.00   23.59   28.00  166.00 
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+   1.00   11.00   17.00   27.38   27.00  399.00 
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+   0.00   16.00   21.00   26.91   29.00  242.00 
+    Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
+ 0.00000  0.00000  0.00000  0.07602  0.00000 19.00000 
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+ 0.0000  0.0000  0.0000  0.1855  0.0000 77.0000 
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+   16.0    88.0   131.0   162.7   204.0   681.0 
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+    7.0    60.0   115.0   161.4   189.0  1679.0 
+> 
+> 
+> proc.time()
+   user  system elapsed 
+ 35.098   0.442  35.627 

@@ -1,0 +1,312 @@
+
+R version 4.3.1 (2023-06-16) -- "Beagle Scouts"
+Copyright (C) 2023 The R Foundation for Statistical Computing
+Platform: x86_64-redhat-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+[Previously saved workspace restored]
+
+> setwd("/home/bmb191/math5376D/Final.Project/Output.Files")
+> 
+> # --------------------------------------------------------
+> # Creating the plots comparing the high correlation counts
+> # --------------------------------------------------------
+> # Reading in the data
+> # --------------------------------------------------------
+> 
+> BRCA_an <- as.numeric(unlist(read.table("Correlation.Counts/BRCA.alive.normal.high.corr.cnts.txt",header=FALSE)))
+> BRCA_an_noise <- as.numeric(unlist(read.table("Correlation.Counts/BRCA.alive.normal.high.corr.with.noise.cnts.txt",header=FALSE)))
+> BRCA_at <- as.numeric(unlist(read.table("Correlation.Counts/BRCA.alive.tumor.high.corr.cnts.txt",header=FALSE)))
+> BRCA_at_noise <- as.numeric(unlist(read.table("Correlation.Counts/BRCA.alive.tumor.high.corr.with.noise.cnts.txt",header=FALSE)))
+> BRCA_dn <- as.numeric(unlist(read.table("Correlation.Counts/BRCA.dead.normal.high.corr.cnts.txt",header=FALSE)))
+> BRCA_dn_noise <- as.numeric(unlist(read.table("Correlation.Counts/BRCA.dead.normal.high.corr.with.noise.cnts.txt",header=FALSE)))
+> BRCA_dt <- as.numeric(unlist(read.table("Correlation.Counts/BRCA.dead.tumor.high.corr.cnts.txt",header=FALSE)))
+> BRCA_dt_noise <- as.numeric(unlist(read.table("Correlation.Counts/BRCA.dead.tumor.high.corr.with.noise.cnts.txt",header=FALSE)))
+> 
+> # --------------------------------------------------------
+> # Creating the pdf file
+> # --------------------------------------------------------
+> pdf("Plots/BRCA.data.high.corr.cnts.comparison.with.added.noise.pdf",16,16)
+> par(mfrow=c(2,2))
+> 
+> # --------------------------------------------------------
+> # Alive normal data
+> # --------------------------------------------------------
+> plot(
++   density((BRCA_an)^(1/4)),
++   col="red",
++   xlim=c(0,4),
++   ylim=c(0,3),
++   main=" "
++ )
+> title("Alive Normal", adj=0.5, line=1, cex.main=0.75, outer=FALSE)
+> legend(
++   "topright",
++   legend=c("Without noise","With noise"),
++   col=c("red","blue"),
++   cex=0.7,
++   lty=1,
++   lwd=2
++ )
+> lines(density((BRCA_an_noise)^(1/4)),col="blue")
+> # --------------------------------------------------------
+> # Alive tumor data
+> # --------------------------------------------------------
+> plot(density(BRCA_at^(1/4)),
++      col="red",
++      main=" ",
++      xlim=c(0,4),
++      ylim=c(0,3)
++ )
+> title("Alive Tumor", adj=0.5, line=1, cex.main=0.75, outer=FALSE)
+> legend(
++   "topright",
++   legend=c("Without noise","With noise"),
++   col=c("red","blue"),
++   cex=0.7,
++   lty=1,
++   lwd=2
++ )
+> lines(density(BRCA_at_noise^(1/4)),col="blue")
+> # --------------------------------------------------------
+> # Dead normal data
+> # --------------------------------------------------------
+> plot(density(BRCA_dn_noise^(1/4)),
++      col="blue",
++      main=" ",
++      xlim=c(0,4),
++      ylim=c(0,3)
++ )
+> title("Dead Normal", adj=0.5, line=1, cex.main=0.75, outer=FALSE)
+> legend(
++   "topright",
++   legend=c("Without noise","With noise"),
++   col=c("red","blue"),
++   cex=0.5,
++   lty=1,
++   lwd=2
++ )
+> lines(density(BRCA_dn^(1/4)),col="red")
+> # --------------------------------------------------------
+> # Dead tumor data
+> # --------------------------------------------------------
+> plot(density(BRCA_dt_noise^(1/4)),
++      col="blue",
++      main=" ",
++      xlim=c(0,4),
++      ylim=c(0,3)
++ )
+> title("Dead Tumor", adj=0.5, line=1, cex.main=0.75, outer=FALSE)
+> legend(
++   "topright",
++   legend=c("Without noise","With noise"),
++   col=c("red","blue"),
++   cex=0.5,
++   lty=1,
++   lwd=2
++ )
+> lines(density(BRCA_dt^(1/4)),col="red")
+> title("BRCA High Correlation Counts With and Without Noise (scaled by fourth root)", line = -2, outer = TRUE)
+> dev.off()
+null device 
+          1 
+> 
+> # --------------------------------------------------------
+> # Print summaries of the counts
+> # --------------------------------------------------------
+> summary(BRCA_an)
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+   0.00    0.00    0.00   16.74    1.00  573.00 
+> summary(BRCA_an_noise)
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+   0.00   15.00   23.00   37.41   32.00  592.00 
+> summary(BRCA_at)
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+  0.000   0.000   0.000   2.466   1.000 142.000 
+> summary(BRCA_at_noise)
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+    2.0    17.0    22.0    23.7    28.0   151.0 
+> summary(BRCA_dn)
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+    0.0     0.0     1.0    15.7     8.0   449.0 
+> summary(BRCA_dn_noise)
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+   1.00   11.00   17.00   29.01   27.00  453.00 
+> summary(BRCA_dt)
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+   0.00    0.00    3.00   11.48   11.75  227.00 
+> summary(BRCA_dt_noise)
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+   2.00   16.00   21.00   27.25   29.00  236.00 
+> 
+> # --------------------------------------------------------
+> # Creating the plots comparing the distances of sites with
+> # high correlation counts
+> # --------------------------------------------------------
+> # Reading in the data
+> # --------------------------------------------------------
+> BRCA_an <- as.numeric(unlist(read.table("Correlation.Distances/BRCA.alive.normal.high.corr.distances.txt",header=FALSE)))
+> BRCA_an_noise <- as.numeric(unlist(read.table("Correlation.Distances/BRCA.alive.normal.high.corr.with.noise.distances.txt",header=FALSE)))
+> BRCA_at <- as.numeric(unlist(read.table("Correlation.Distances/BRCA.alive.tumor.high.corr.distances.txt",header=FALSE)))
+> BRCA_at_noise <- as.numeric(unlist(read.table("Correlation.Distances/BRCA.alive.tumor.high.corr.with.noise.distances.txt",header=FALSE)))
+> BRCA_dn <- as.numeric(unlist(read.table("Correlation.Distances/BRCA.dead.normal.high.corr.distances.txt",header=FALSE)))
+> BRCA_dn_noise <- as.numeric(unlist(read.table("Correlation.Distances/BRCA.dead.normal.high.corr.with.noise.distances.txt",header=FALSE)))
+> BRCA_dt <- as.numeric(unlist(read.table("Correlation.Distances/BRCA.dead.tumor.high.corr.distances.txt",header=FALSE)))
+> BRCA_dt_noise <- as.numeric(unlist(read.table("Correlation.Distances/BRCA.dead.tumor.high.corr.with.noise.distances.txt",header=FALSE)))
+> 
+> max_x <- max(BRCA_an, BRCA_an_noise, BRCA_at, BRCA_at_noise, BRCA_dn, BRCA_dn_noise, BRCA_dt, BRCA_dt_noise)
+> max_y <- 2*max(density(c(BRCA_an, BRCA_an_noise, BRCA_at, BRCA_at_noise, BRCA_dn, BRCA_dn_noise, BRCA_dt, BRCA_dt_noise))$y)
+> # --------------------------------------------------------
+> # Creating the pdf file
+> # --------------------------------------------------------
+> pdf("Plots/BRCA.data.high.corr.distances.comparison.with.added.noise.pdf",16,16)
+> par(mfrow=c(2,2))
+> 
+> # --------------------------------------------------------
+> # Alive normal
+> # --------------------------------------------------------
+> plot(
++   density(BRCA_an_noise),
++   col="blue",
++   xlim=c(0,max_x),
++   ylim=c(0,max_y),
++   main=" "
++ )
+> title("Alive Normal", adj=0.5, line=1, cex.main=0.75, outer=FALSE)
+> legend(
++   "topright",
++   legend=c("Without noise","With noise"),
++   col=c("red","blue"),
++   cex=0.7,
++   lty=1,
++   lwd=2
++ )
+> lines(density(BRCA_an),col="red")
+> # --------------------------------------------------------
+> # Alive tumor
+> # --------------------------------------------------------
+> plot(density(BRCA_at),
++      col="red",
++      main=" ",
++      xlim=c(0,max_x),
++      ylim=c(0,max_y)
++ )
+> title("Alive Tumor", adj=0.5, line=1, cex.main=0.75, outer=FALSE)
+> legend(
++   "topright",
++   legend=c("Without noise","With noise"),
++   col=c("red","blue"),
++   cex=0.7,
++   lty=1,
++   lwd=2
++ )
+> lines(density(BRCA_at_noise),col="blue")
+> # --------------------------------------------------------
+> # Dead normal
+> # --------------------------------------------------------
+> plot(density(BRCA_dn_noise),
++      col="blue",
++      main=" ",
++      xlim=c(0,max_x),
++      ylim=c(0,max_y)
++ )
+> title("Dead Normal", adj=0.5, line=1, cex.main=0.75, outer=FALSE)
+> legend(
++   "topright",
++   legend=c("Without noise","With noise"),
++   col=c("red","blue"),
++   cex=0.5,
++   lty=1,
++   lwd=2
++ )
+> lines(density(BRCA_dn),col="red")
+> # --------------------------------------------------------
+> # Dead tumor
+> # --------------------------------------------------------
+> plot(density(BRCA_dt_noise),
++      col="blue",
++      main=" ",
++      xlim=c(0,max_x),
++      ylim=c(0,max_y)
++ )
+> title("Dead Tumor", adj=0.5, line=1, cex.main=0.75, outer=FALSE)
+> legend(
++   "topright",
++   legend=c("Without noise","With noise"),
++   col=c("red","blue"),
++   cex=0.5,
++   lty=1,
++   lwd=2
++ )
+> lines(density(BRCA_dt),col="red")
+> 
+> title("BRCA High Correlation Distances With and Without Noise", line = -2, outer = TRUE)
+> dev.off()
+null device 
+          1 
+> 
+> summary(BRCA_an)
+     Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
+        2  18274758  48270973  53796088  86874196 152125211 
+> summary(BRCA_an_noise)
+     Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
+        0   8068352  35788926  48068420  83325200 152125211 
+> summary(BRCA_at)
+     Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
+        2    691966  16005015  31836764  52615632 149861729 
+> summary(BRCA_at_noise)
+     Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
+        0         0       193  17614281  21116052 149861729 
+> summary(BRCA_dn)
+     Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
+        2  18142761  47092166  51862141  83237542 152606431 
+> summary(BRCA_dn_noise)
+     Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
+        0   8373957  34966581  46003525  80537916 152606431 
+> summary(BRCA_dt)
+     Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
+        2   2614341  19763148  27133353  41961302 151265495 
+> summary(BRCA_dt_noise)
+     Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
+        0    322442  13182382  23107726  35582042 151265495 
+> 
+> # --------------------------------------------------------
+> # Creating the plots comparing the distances of sites with
+> # high correlation counts scaled by 4th root
+> # --------------------------------------------------------
+> max_x <- max(BRCA_an^(1/4), BRCA_an_noise^(1/4), BRCA_at^(1/4), BRCA_at_noise^(1/4), BRCA_dn^(1/4), BRCA_dn_noise^(1/4), BRCA_dt^(1/4), BRCA_dt_noise^(1/4))
+> max_y <- max(density(c(BRCA_an^(1/4), BRCA_an_noise^(1/4), BRCA_at^(1/4), BRCA_at_noise^(1/4), BRCA_dn^(1/4), BRCA_dn_noise^(1/4), BRCA_dt^(1/4), BRCA_dt_noise^(1/4)))$y)
+> 
+> # --------------------------------------------------------
+> # Creating the pdf file
+> # --------------------------------------------------------
+> pdf("Plots/BRCA.data.high.corr.distances.comparison.with.added.noise.scaled.pdf",16,16)
+> par(mfrow=c(2,2))
+> 
+> # --------------------------------------------------------
+> # Alive normal
+> # --------------------------------------------------------
+> lines(
++   density(BRCA_an_noise^1/2),
++   col="blue",
++   #xlim=c(0,max_x),
++   #ylim=c(0,max_y),
++   main=" "
++ )
+Error in plot.xy(xy.coords(x, y), type = type, ...) : 
+  plot.new has not been called yet
+Calls: lines -> lines.default -> plot.xy
+Execution halted

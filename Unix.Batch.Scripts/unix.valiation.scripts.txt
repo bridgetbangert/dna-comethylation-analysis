@@ -1,0 +1,192 @@
+# ------------------------------------------------------------
+# Validate negative + positive corr counts match abs value - BRCA
+# ------------------------------------------------------------
+diff <(paste /home/bmb191/math5376D/Final.Project/Output.Files/Correlation.Counts/positive.BRCA.alive.normal.high.corr.cnts.txt /home/bmb191/math5376D/Final.Project/Output.Files/Correlation.Counts/negative.BRCA.alive.normal.high.corr.cnts.txt | awk '{print $1 + $2}') /home/bmb191/math5376D/Final.Project/Output.Files/Correlation.Counts/BRCA.alive.normal.high.corr.cnts.txt | wc -l
+diff <(paste Correlation.Counts/positive.BRCA.alive.tumor.high.corr.cnts.txt Correlation.Counts/negative.BRCA.alive.tumor.high.corr.cnts.txt | awk '{print $1 + $2}') Correlation.Counts/BRCA.alive.tumor.high.corr.cnts.txt | wc -l
+diff <(paste Correlation.Counts/positive.BRCA.dead.normal.high.corr.cnts.txt Correlation.Counts/negative.BRCA.dead.normal.high.corr.cnts.txt | awk '{print $1 + $2}') Correlation.Counts/BRCA.dead.normal.high.corr.cnts.txt | wc -l
+diff <(paste Correlation.Counts/positive.BRCA.dead.tumor.high.corr.cnts.txt Correlation.Counts/negative.BRCA.dead.tumor.high.corr.cnts.txt | awk '{print $1 + $2}') Correlation.Counts/BRCA.dead.tumor.high.corr.cnts.txt | wc -l
+
+##### EXPECTED OUTPUT #####
+[bmb191@login1 Output.Files]$ diff <(paste Correlation.Counts/positive.BRCA.alive.normal.high.corr.cnts.txt Correlation.Counts/negative.BRCA.alive.normal.high.corr.cnts.txt | awk '{print $1 + $2}') Correlation.Counts/BRCA.alive.normal.high.corr.cnts.txt | wc -l
+0
+[bmb191@login1 Output.Files]$ diff <(paste Correlation.Counts/positive.BRCA.alive.tumor.high.corr.cnts.txt Correlation.Counts/negative.BRCA.alive.tumor.high.corr.cnts.txt | awk '{print $1 + $2}') Correlation.Counts/BRCA.alive.tumor.high.corr.cnts.txt | wc -l
+0
+[bmb191@login1 Output.Files]$ diff <(paste Correlation.Counts/positive.BRCA.dead.normal.high.corr.cnts.txt Correlation.Counts/negative.BRCA.dead.normal.high.corr.cnts.txt | awk '{print $1 + $2}') Correlation.Counts/BRCA.dead.normal.high.corr.cnts.txt | wc -l
+0
+[bmb191@login1 Output.Files]$ diff <(paste Correlation.Counts/positive.BRCA.dead.tumor.high.corr.cnts.txt Correlation.Counts/negative.BRCA.dead.tumor.high.corr.cnts.txt | awk '{print $1 + $2}') Correlation.Counts/BRCA.dead.tumor.high.corr.cnts.txt | wc -l
+0
+
+# ------------------------------------------------------------
+# Validate we got the same indexes for high correlations
+# ------------------------------------------------------------
+diff <(awk '{print $1,$2}' /home/vbz21/math5376D/final.project/BRCA.alive.normal.distances.winfo.txt | tail -n +2) /home/bmb191/math5376D/Final.Project/Output.Files/High.Corr.Distance.Indeces/BRCA.alive.normal.high.corr.indeces.txt | wc -l
+diff <(awk '{print $1,$2}' /home/vbz21/math5376D/final.project/BRCA.alive.tumor.distances.winfo.txt | tail -n +2) /home/bmb191/math5376D/Final.Project/Output.Files/High.Corr.Distance.Indeces/BRCA.alive.tumor.high.corr.indeces.txt | wc -l
+diff <(awk '{print $1,$2}' /home/vbz21/math5376D/final.project/UCEC.dead.normal.distances.txt | tail -n+2) UCEC.dead.normal.high.corr.indeces.txt | wc -l
+diff <(awk '{print $1,$2}' /home/vbz21/math5376D/final.project/UCEC.dead.tumor.distances.txt | tail -n+2) UCEC.dead.tumor.high.corr.indeces.txt | wc -l
+
+##### EXPECTED OUTPUT #####
+[bmb191@login1 High.Corr.Distance.Indeces]$ diff UCEC.dead.normal.high.corr.indeces.txt <(awk '{print $1,$2}' /home/vbz21/math5376D/final.project/UCEC.dead.normal.distances.txt | tail -n+2) | wc -l
+0
+[bmb191@login1 High.Corr.Distance.Indeces]$ diff UCEC.dead.tumor.high.corr.indeces.txt <(awk '{print $1,$2}' /home/vbz21/math5376D/final.project/UCEC.dead.tumor.distances.txt | tail -n+2) | wc -l
+0
+
+# ------------------------------------------------------------
+# Validate negative + positive corr counts match abs value - UCEC
+# ------------------------------------------------------------
+diff <(paste Correlation.Counts/positive.UCEC.alive.normal.high.corr.cnts.txt Correlation.Counts/negative.UCEC.alive.normal.high.corr.cnts.txt | awk '{print $1 + $2}') Correlation.Counts/UCEC.alive.normal.high.corr.cnts.txt | wc -l
+diff <(paste Correlation.Counts/positive.UCEC.alive.tumor.high.corr.cnts.txt Correlation.Counts/negative.UCEC.alive.tumor.high.corr.cnts.txt | awk '{print $1 + $2}') Correlation.Counts/UCEC.alive.tumor.high.corr.cnts.txt | wc -l
+diff <(paste Correlation.Counts/positive.UCEC.dead.normal.high.corr.cnts.txt Correlation.Counts/negative.UCEC.dead.normal.high.corr.cnts.txt | awk '{print $1 + $2}') Correlation.Counts/UCEC.dead.normal.high.corr.cnts.txt | wc -l
+diff <(paste Correlation.Counts/positive.UCEC.dead.tumor.high.corr.cnts.txt Correlation.Counts/negative.UCEC.dead.tumor.high.corr.cnts.txt | awk '{print $1 + $2}') Correlation.Counts/UCEC.dead.tumor.high.corr.cnts.txt | wc -l
+
+##### EXPECTED OUTPUT #####
+[bmb191@login1 Output.Files]$ diff <(paste Correlation.Counts/positive.UCEC.alive.normal.high.corr.cnts.txt Correlation.Counts/negative.UCEC.alive.normal.high.corr.cnts.txt | awk '{print $1 + $2}') Correlation.Counts/UCEC.alive.normal.high.corr.cnts.txt | wc -l
+0
+[bmb191@login1 Output.Files]$ diff <(paste Correlation.Counts/positive.UCEC.alive.tumor.high.corr.cnts.txt Correlation.Counts/negative.UCEC.alive.tumor.high.corr.cnts.txt | awk '{print $1 + $2}') Correlation.Counts/UCEC.alive.tumor.high.corr.cnts.txt | wc -l
+0
+[bmb191@login1 Output.Files]$ diff <(paste Correlation.Counts/positive.UCEC.dead.normal.high.corr.cnts.txt Correlation.Counts/negative.UCEC.dead.normal.high.corr.cnts.txt | awk '{print $1 + $2}') Correlation.Counts/UCEC.dead.normal.high.corr.cnts.txt | wc -l
+0
+[bmb191@login1 Output.Files]$ diff <(paste Correlation.Counts/positive.UCEC.dead.tumor.high.corr.cnts.txt Correlation.Counts/negative.UCEC.dead.tumor.high.corr.cnts.txt | awk '{print $1 + $2}') Correlation.Counts/UCEC.dead.tumor.high.corr.cnts.txt | wc -l
+0
+
+# ------------------------------------------------------------
+# Validate counts match unix count calculations - BRCA
+# ------------------------------------------------------------
+diff <(awk '{count=0; for (i=1;i<=NF;i++) if ((($i>=0.8)||($i<=-0.8))&&($i!=1)) count++; print count}' /home/bmb191/math5376D/Final.Project/Output.Files/Correlation.Matrices/BRCA.alive.normal.corr.matrix.txt) /home/bmb191/math5376D/Final.Project/Output.Files/Correlation.Counts/BRCA.alive.normal.high.corr.cnts.txt | wc -l
+diff <(awk '{count=0; for (i=1;i<=NF;i++) if ((($i>=0.8)||($i<=-0.8))&&($i!=1)) count++; print count}' /home/bmb191/math5376D/Final.Project/Output.Files/Correlation.Matrices/BRCA.alive.tumor.corr.matrix.txt) /home/bmb191/math5376D/Final.Project/Output.Files/Correlation.Counts/BRCA.alive.tumor.high.corr.cnts.txt | wc -l
+diff <(awk '{count=0; for (i=1;i<=NF;i++) if ((($i>=0.8)||($i<=-0.8))&&($i!=1)) count++; print count}' /home/bmb191/math5376D/Final.Project/Output.Files/Correlation.Matrices/BRCA.dead.normal.corr.matrix.txt) /home/bmb191/math5376D/Final.Project/Output.Files/Correlation.Counts/BRCA.dead.normal.high.corr.cnts.txt | wc -l
+diff <(awk '{count=0; for (i=1;i<=NF;i++) if ((($i>=0.8)||($i<=-0.8))&&($i!=1)) count++; print count}' /home/bmb191/math5376D/Final.Project/Output.Files/Correlation.Matrices/BRCA.dead.tumor.corr.matrix.txt) /home/bmb191/math5376D/Final.Project/Output.Files/Correlation.Counts/BRCA.dead.tumor.high.corr.cnts.txt | wc -l
+
+##### EXPECTED OUTPUT #####
+[bmb191@login1 ~]$ diff <(awk '{count=0; for (i=1;i<=NF;i++) if ((($i>=0.8)||($i<=-0.8))&&($i!=1)) count++; print count}' Correlation.Matrices/BRCA.alive.normal.corr.matrix.txt) Correlation.Counts/BRCA.alive.normal.high.corr.cnts.txt | wc -l
+0
+[bmb191@login1 ~]$ diff <(awk '{count=0; for (i=1;i<=NF;i++) if ((($i>=0.8)||($i<=-0.8))&&($i!=1)) count++; print count}' Correlation.Matrices/BRCA.alive.tumor.corr.matrix.txt) Correlation.Counts/BRCA.alive.tumor.high.corr.cnts.txt | wc -l
+0
+[bmb191@login1 ~]$ diff <(awk '{count=0; for (i=1;i<=NF;i++) if ((($i>=0.8)||($i<=-0.8))&&($i!=1)) count++; print count}' Correlation.Matrices/BRCA.dead.normal.corr.matrix.txt) Correlation.Counts/BRCA.dead.normal.high.corr.cnts.txt | wc -l
+0
+[bmb191@login1 ~]$ diff <(awk '{count=0; for (i=1;i<=NF;i++) if ((($i>=0.8)||($i<=-0.8))&&($i!=1)) count++; print count}' Correlation.Matrices/BRCA.dead.tumor.corr.matrix.txt) Correlation.Counts/BRCA.dead.tumor.high.corr.cnts.txt | wc -l
+0
+
+# ------------------------------------------------------------
+# Validate counts match unix count calculations - UCEC
+# ------------------------------------------------------------
+diff <(awk '{count=0; for (i=1;i<=NF;i++) if ((($i>=0.8)||($i<=-0.8))&&($i!=1)) count++; print count}' /home/bmb191/math5376D/Final.Project/Output.Files/Correlation.Matrices/UCEC.alive.normal.corr.matrix.txt) /home/bmb191/math5376D/Final.Project/Output.Files/Correlation.Counts/UCEC.alive.normal.high.corr.cnts.txt | wc -l
+diff <(awk '{count=0; for (i=1;i<=NF;i++) if ((($i>=0.8)||($i<=-0.8))&&($i!=1)) count++; print count}' /home/bmb191/math5376D/Final.Project/Output.Files/Correlation.Matrices/UCEC.alive.tumor.corr.matrix.txt) /home/bmb191/math5376D/Final.Project/Output.Files/Correlation.Counts/UCEC.alive.tumor.high.corr.cnts.txt | wc -l
+diff <(awk '{count=0; for (i=1;i<=NF;i++) if ((($i>=0.8)||($i<=-0.8))&&($i!=1)) count++; print count}' /home/bmb191/math5376D/Final.Project/Output.Files/Correlation.Matrices/UCEC.dead.normal.corr.matrix.txt) /home/bmb191/math5376D/Final.Project/Output.Files/Correlation.Counts/UCEC.dead.normal.high.corr.cnts.txt | wc -l
+diff <(awk '{count=0; for (i=1;i<=NF;i++) if ((($i>=0.8)||($i<=-0.8))&&($i!=1)) count++; print count}' /home/bmb191/math5376D/Final.Project/Output.Files/Correlation.Matrices/UCEC.dead.tumor.corr.matrix.txt) /home/bmb191/math5376D/Final.Project/Output.Files/Correlation.Counts/UCEC.dead.tumor.high.corr.cnts.txt | wc -l
+
+##### EXPECTED OUTPUT #####
+[bmb191@login1 Output.Files]$ diff <(awk '{count=0; for (i=1;i<=NF;i++) if ((($i>=0.8)||($i<=-0.8))&&($i!=1)) count++; print count}' Correlation.Matrices/UCEC.alive.normal.corr.matrix.txt) Correlation.Counts/UCEC.alive.normal.high.corr.cnts.txt | wc -l
+0
+[bmb191@login1 Output.Files]$ diff <(awk '{count=0; for (i=1;i<=NF;i++) if ((($i>=0.8)||($i<=-0.8))&&($i!=1)) count++; print count}' Correlation.Matrices/UCEC.alive.tumor.corr.matrix.txt) Correlation.Counts/UCEC.alive.tumor.high.corr.cnts.txt | wc -l
+0
+[bmb191@login1 Distance.Matrices]$ diff <(awk '{count=0; for (i=1;i<=NF;i++) if ((($i>=0.8)||($i<=-0.8))&&($i!=1)) count++; print count}' /home/bmb191/math5376D/Final.Project/Output.Files/Correlation.Matrices/UCEC.dead.normal.corr.matrix.txt) /home/bmb191/math5376D/Final.Project/Output.Files/Correlation.Counts/UCEC.dead.normal.high.corr.cnts.txt | wc -l
+18581
+[bmb191@login1 Distance.Matrices]$ diff <(awk '{count=0; for (i=1;i<=NF;i++) if ((($i>=0.8)||($i<=-0.8))&&($i!=1)) count++; print count}' /home/bmb191/math5376D/Final.Project/Output.Files/Correlation.Matrices/UCEC.dead.tumor.corr.matrix.txt) /home/bmb191/math5376D/Final.Project/Output.Files/Correlation.Counts/UCEC.dead.tumor.high.corr.cnts.txt | wc -l
+18702
+
+# ------------------------------------------------------------
+Comparing Madison and I's outputs - corr counts
+# ------------------------------------------------------------
+diff <(cut -d' ' -f2 /home/vbz21/math5376D/final.project/BRCA.alive.normal.highcorr.txt | tail -n +2) /home/bmb191/math5376D/Final.Project/Output.Files/Correlation.Counts/BRCA.alive.normal.high.corr.cnts.txt | wc -l
+diff <(cut -d' ' -f2 /home/vbz21/math5376D/final.project/BRCA.alive.tumor.highcorr.txt | tail -n +2) /home/bmb191/math5376D/Final.Project/Output.Files/Correlation.Counts/BRCA.alive.tumor.high.corr.cnts.txt | wc -l
+diff <(cut -d' ' -f2 /home/vbz21/math5376D/final.project/BRCA.dead.normal.highcorr.txt | tail -n +2) /home/bmb191/math5376D/Final.Project/Output.Files/Correlation.Counts/BRCA.dead.normal.high.corr.cnts.txt | wc -l
+diff <(cut -d' ' -f2 /home/vbz21/math5376D/final.project/BRCA.dead.tumor.highcorr.txt | tail -n +2) /home/bmb191/math5376D/Final.Project/Output.Files/Correlation.Counts/BRCA.dead.tumor.high.corr.cnts.txt | wc -l
+
+diff <(cut -d' ' -f2 /home/vbz21/math5376D/final.project/UCEC.alive.normal.highcorr.txt | tail -n +2) /home/bmb191/math5376D/Final.Project/Output.Files/Correlation.Counts/UCEC.alive.normal.high.corr.cnts.txt | wc -l
+diff <(cut -d' ' -f2 /home/vbz21/math5376D/final.project/UCEC.alive.tumor.highcorr.txt | tail -n +2) /home/bmb191/math5376D/Final.Project/Output.Files/Correlation.Counts/UCEC.alive.tumor.high.corr.cnts.txt | wc -l
+diff <(cut -d' ' -f2 /home/vbz21/math5376D/final.project/UCEC.dead.normal.highcorr.txt | tail -n +2) /home/bmb191/math5376D/Final.Project/Output.Files/Correlation.Counts/UCEC.dead.normal.high.corr.cnts.txt | wc -l
+diff <(cut -d' ' -f2 /home/vbz21/math5376D/final.project/UCEC.dead.tumor.highcorr.txt | tail -n +2) /home/bmb191/math5376D/Final.Project/Output.Files/Correlation.Counts/UCEC.dead.tumor.high.corr.cnts.txt | wc -l
+
+
+##### EXPECTED OUTPUT #####
+[bmb191@login2 ~]$ diff <(cut -d' ' -f2 /home/vbz21/math5376D/final.project/BRCA.alive.normal.highcorr.txt | tail -n +2) /home/bmb191/math5376D/Final.Project/Output.Files/Correlation.Counts/BRCA.alive.normal.high.corr.cnts.txt | wc -l
+0
+[bmb191@login2 ~]$ diff <(cut -d' ' -f2 /home/vbz21/math5376D/final.project/BRCA.alive.tumor.highcorr.txt | tail -n +2) /home/bmb191/math5376D/Final.Project/Output.Files/Correlation.Counts/BRCA.alive.tumor.high.corr.cnts.txt | wc -l
+0
+[bmb191@login2 ~]$ diff <(cut -d' ' -f2 /home/vbz21/math5376D/final.project/BRCA.dead.normal.highcorr.txt | tail -n +2) /home/bmb191/math5376D/Final.Project/Output.Files/Correlation.Counts/BRCA.dead.normal.high.corr.cnts.txt | wc -l
+0
+[bmb191@login2 ~]$ diff <(cut -d' ' -f2 /home/vbz21/math5376D/final.project/BRCA.dead.tumor.highcorr.txt | tail -n +2) /home/bmb191/math5376D/Final.Project/Output.Files/Correlation.Counts/BRCA.dead.tumor.high.corr.cnts.txt | wc -l
+0
+
+[bmb191@login1 ~]$ diff <(cut -d' ' -f2 /home/vbz21/math5376D/final.project/UCEC.alive.normal.highcorr.txt | tail -n +2) /home/bmb191/math5376D/Final.Project/Output.Files/Correlation.Counts/UCEC.alive.normal.high.corr.cnts.txt | wc -l
+0
+[bmb191@login1 ~]$ diff <(cut -d' ' -f2 /home/vbz21/math5376D/final.project/UCEC.alive.tumor.highcorr.txt | tail -n +2) /home/bmb191/math5376D/Final.Project/Output.Files/Correlation.Counts/UCEC.alive.tumor.high.corr.cnts.txt | wc -l
+0
+[bmb191@login1 ~]$ diff <(cut -d' ' -f2 /home/vbz21/math5376D/final.project/UCEC.dead.normal.highcorr.txt | tail -n +2) /home/bmb191/math5376D/Final.Project/Output.Files/Correlation.Counts/UCEC.dead.normal.high.corr.cnts.txt | wc -l
+0
+[bmb191@login1 ~]$ diff <(cut -d' ' -f2 /home/vbz21/math5376D/final.project/UCEC.dead.tumor.highcorr.txt | tail -n +2) /home/bmb191/math5376D/Final.Project/Output.Files/Correlation.Counts/UCEC.dead.tumor.high.corr.cnts.txt | wc -l
+0
+
+# ------------------------------------------------------------
+Comparing Madison and I's outputs - distance matrices
+# ------------------------------------------------------------
+diff /home/vbz21/math5376D/final.project/BRCA.alive.normal.distances.txt /home/bmb191/math5376D/Final.Project/Output.Files/Distance.Matrices/BRCA.alive.normal.distance.matrix.txt | wc -l
+diff /home/vbz21/math5376D/final.project/BRCA.alive.tumor.distances.txt /home/bmb191/math5376D/Final.Project/Output.Files/Distance.Matrices/BRCA.alive.tumor.distance.matrix.txt | wc -l
+diff /home/vbz21/math5376D/final.project/BRCA.dead.normal.distances.txt /home/bmb191/math5376D/Final.Project/Output.Files/Distance.Matrices/BRCA.dead.normal.distance.matrix.txt | wc -l
+diff /home/vbz21/math5376D/final.project/BRCA.dead.tumor.distances.txt /home/bmb191/math5376D/Final.Project/Output.Files/Distance.Matrices/BRCA.dead.tumor.distance.matrix.txt | wc -l
+
+diff /home/vbz21/math5376D/final.project/UCEC.alive.normal.distances.txt /home/bmb191/math5376D/Final.Project/Output.Files/Distance.Matrices/UCEC.alive.normal.distance.matrix.txt | wc -l
+diff /home/vbz21/math5376D/final.project/UCEC.alive.tumor.distances.txt /home/bmb191/math5376D/Final.Project/Output.Files/Distance.Matrices/UCEC.alive.tumor.distance.matrix.txt | wc -l
+diff /home/vbz21/math5376D/final.project/UCEC.dead.normal.distances.txt /home/bmb191/math5376D/Final.Project/Output.Files/Distance.Matrices/UCEC.dead.normal.distance.matrix.txt | wc -l
+diff /home/vbz21/math5376D/final.project/UCEC.dead.tumor.distances.txt /home/bmb191/math5376D/Final.Project/Output.Files/Distance.Matrices/UCEC.dead.tumor.distance.matrix.txt | wc -l
+
+##### EXPECTED OUTPUT #####
+
+
+# ------------------------------------------------------------
+Comparing Madison and I's outputs - high corr distances
+# ------------------------------------------------------------
+diff <(cut -f5 /home/vbz21/math5376D/final.project/BRCA.alive.normal.distances.txt | tail -n +2) /home/bmb191/math5376D/Final.Project/Output.Files/Correlation.Distances/BRCA.alive.normal.high.corr.distances.txt | wc -l
+diff <(cut -f5 /home/vbz21/math5376D/final.project/BRCA.alive.tumor.distances.txt | tail -n +2) /home/bmb191/math5376D/Final.Project/Output.Files/Correlation.Distances/BRCA.alive.tumor.high.corr.distances.txt | wc -l
+diff <(cut -f5 /home/vbz21/math5376D/final.project/BRCA.dead.normal.distances.txt | tail -n +2) /home/bmb191/math5376D/Final.Project/Output.Files/Correlation.Distances/BRCA.dead.normal.high.corr.distances.txt | wc -l
+diff <(cut -f5 /home/vbz21/math5376D/final.project/BRCA.dead.tumor.distances.txt | tail -n +2) /home/bmb191/math5376D/Final.Project/Output.Files/Correlation.Distances/BRCA.dead.tumor.high.corr.distances.txt | wc -l
+
+diff <(cut -f5 /home/vbz21/math5376D/final.project/UCEC.alive.normal.distances.txt | tail -n +2) /home/bmb191/math5376D/Final.Project/Output.Files/Correlation.Distances/UCEC.alive.normal.high.corr.distances.txt | wc -l
+diff <(cut -f5 /home/vbz21/math5376D/final.project/UCEC.alive.tumor.distances.txt | tail -n +2) /home/bmb191/math5376D/Final.Project/Output.Files/Correlation.Distances/UCEC.alive.tumor.high.corr.distances.txt | wc -l
+diff <(cut -f5 /home/vbz21/math5376D/final.project/UCEC.dead.normal.distances.txt | tail -n +2) /home/bmb191/math5376D/Final.Project/Output.Files/Correlation.Distances/UCEC.dead.normal.high.corr.distances.txt | wc -l
+diff <(cut -f5 /home/vbz21/math5376D/final.project/UCEC.dead.tumor.distances.txt | tail -n +2) /home/bmb191/math5376D/Final.Project/Output.Files/Correlation.Distances/UCEC.dead.tumor.high.corr.distances.txt | wc -l
+
+
+##### EXPECTED OUTPUT #####
+[bmb191@login2 ~]$ diff <(cut -f5 /home/vbz21/math5376D/final.project/BRCA.alive.normal.distances.txt | tail -n +2) /home/bmb191/math5376D/Final.Project/Output.Files/Correlation.Distances/BRCA.alive.normal.high.corr.distances.txt | wc -l
+0
+[bmb191@login2 ~]$ diff <(cut -f5 /home/vbz21/math5376D/final.project/BRCA.alive.tumor.distances.txt | tail -n +2) /home/bmb191/math5376D/Final.Project/Output.Files/Correlation.Distances/BRCA.alive.tumor.high.corr.distances.txt | wc -l
+0
+[bmb191@login2 ~]$ diff <(cut -f5 /home/vbz21/math5376D/final.project/BRCA.dead.normal.distances.txt | tail -n +2) /home/bmb191/math5376D/Final.Project/Output.Files/Correlation.Distances/BRCA.dead.normal.high.corr.distances.txt | wc -l
+0
+[bmb191@login2 ~]$ diff <(cut -f5 /home/vbz21/math5376D/final.project/BRCA.dead.tumor.distances.txt | tail -n +2) /home/bmb191/math5376D/Final.Project/Output.Files/Correlation.Distances/BRCA.dead.tumor.high.corr.distances.txt | wc -l
+0
+
+[bmb191@login2 ~]$ diff <(cut -f5 /home/vbz21/math5376D/final.project/UCEC.alive.normal.distances.txt | tail -n +2) /home/bmb191/math5376D/Final.Project/Output.Files/Correlation.Distances/UCEC.alive.normal.high.corr.distances.txt | wc -l
+0
+[bmb191@login2 ~]$ diff <(cut -f5 /home/vbz21/math5376D/final.project/UCEC.alive.tumor.distances.txt | tail -n +2) /home/bmb191/math5376D/Final.Project/Output.Files/Correlation.Distances/UCEC.alive.tumor.high.corr.distances.txt | wc -l
+0
+# It actually is 0, but some of my entries are in scientific notation
+[bmb191@login2 ~]$ diff <(cut -f5 /home/vbz21/math5376D/final.project/UCEC.dead.normal.distances.txt | tail -n +2) /home/bmb191/math5376D/Final.Project/Output.Files/Correlation.Distances/UCEC.dead.normal.high.corr.distances.txt | wc -l
+24
+[bmb191@login2 ~]$ diff <(cut -f5 /home/vbz21/math5376D/final.project/UCEC.dead.tumor.distances.txt | tail -n +2) /home/bmb191/math5376D/Final.Project/Output.Files/Correlation.Distances/UCEC.dead.tumor.high.corr.distances.txt | wc -l
+56
+
+# ------------------------------------------------------------
+# Investigation of UCEC dead samples discrepancies
+# ------------------------------------------------------------
+#### Correlation matrices match ####
+[bmb191@login1 ~]$ diff /home/vbz21/math5376D/final.project/UCEC.dead.normal.correlations.txt /home/bmb191/math5376D/Final.Project/Output.Files/Correlation.Matrices/UCEC.dead.normal.corr.matrix.txt | wc -l
+0
+[bmb191@login1 ~]$ diff /home/vbz21/math5376D/final.project/UCEC.dead.tumor.correlations.txt /home/bmb191/math5376D/Final.Project/Output.Files/Correlation.Matrices/UCEC.dead.tumor.corr.matrix.txt | wc -l
+0
+
+#### Distance indeces match ####
+[bmb191@login1 High.Corr.Distance.Indeces]$ diff UCEC.dead.normal.high.corr.indeces.txt <(awk '{print $1,$2}' /home/vbz21/math5376D/final.project/UCEC.dead.normal.distances.txt | tail -n+2) | wc -l
+0
+[bmb191@login1 High.Corr.Distance.Indeces]$ diff UCEC.dead.tumor.high.corr.indeces.txt <(awk '{print $1,$2}' /home/vbz21/math5376D/final.project/UCEC.dead.tumor.distances.txt | tail -n+2) | wc -l
+0
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,617 @@
+
+R version 4.3.1 (2023-06-16) -- "Beagle Scouts"
+Copyright (C) 2023 The R Foundation for Statistical Computing
+Platform: x86_64-redhat-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+[Previously saved workspace restored]
+
+> setwd("/home/bmb191/math5376D/Final.Project/Output.Files")
+> 
+> setClass("CountsAnalysis",
++          slots = list(
++            group="character",
++            normal_cnts="list",
++            tumor_cnts="list",
++            normal_cnts_pos="list",
++            tumor_cnts_pos="list",
++            normal_cnts_neg="list",
++            tumor_cnts_neg="list"
++ ))
+> setClass("DistancesAnalysis",
++          slots = list(
++            group="character",
++            normal_dist="list",
++            tumor_dist="list",
++            normal_dist_pos="list",
++            tumor_dist_pos="list",
++            normal_dist_neg="list",
++            tumor_dist_neg="list"
++ ))
+> 
+> load_data <- function(analysis_subset, sign, cell_health, measure) {
++   return(read.table(
++     get_directory(analysis_subset, sign, cell_health, measure),
++     header=FALSE
++   ))
++ }
+> 
+> get_directory <- function(analysis_subset, sign, cell_health, measure) {
++   if (sign != "") { sign = paste0(sign,".") }
++   if (measure == "counts") { 
++     directory="Correlation.Counts/"
++     filename=".high.corr.cnts.txt"
++   }
++   else if (measure == "distances") { 
++     directory="Correlation.Distances/"
++     filename=".high.corr.distances.txt" 
++   }
++   else { print("Measure not found. Please try again"); return() }
++   return(paste0(
++     directory,
++     sign,
++     analysis_subset,
++     ".",
++     cell_health,
++     filename
++   ))
++ }
+> 
+> get_group <- function(analysis_subset) {
++   grp_str <- strsplit(analysis_subset,"\\.")[[1]]
++   disease <- grp_str[1]
++   status <- grp_str[2]
++   return(paste(
++     grp_str[1], 
++     paste0(
++       toupper(substring(status, 1, 1)), 
++       substring(status, 2)
++     )
++   ))
++ }
+> 
+> CountsAnalysis <- function(analysis_subset) {
++   new("CountsAnalysis", 
++     group=get_group(analysis_subset),
++     normal_cnts=load_data(analysis_subset,"","normal","counts"),
++     tumor_cnts=load_data(analysis_subset,"","tumor","counts"),
++     normal_cnts_pos=load_data(analysis_subset,"positive","normal","counts"),
++     tumor_cnts_pos=load_data(analysis_subset,"positive","tumor","counts"),
++     normal_cnts_neg=load_data(analysis_subset,"negative","normal","counts"),
++     tumor_cnts_neg=load_data(analysis_subset,"negative","tumor","counts")
++   )
++ }
+> 
+> DistancesAnalysis <- function(analysis_subset) {
++   new("DistancesAnalysis", 
++       group=get_group(analysis_subset),
++       normal_dist=load_data(analysis_subset,"","normal","distances"),
++       tumor_dist=load_data(analysis_subset,"","tumor","distances"),
++       normal_dist_pos=load_data(analysis_subset,"positive","normal","distances"),
++       tumor_dist_pos=load_data(analysis_subset,"positive","tumor","distances"),
++       normal_dist_neg=load_data(analysis_subset,"negative","normal","distances"),
++       tumor_dist_neg=load_data(analysis_subset,"negative","tumor","distances")
++   )
++ }
+> 
+> setGeneric("boxplot_comparison_cnts", function(object, scale) standardGeneric("boxplot_comparison_cnts"))
+[1] "boxplot_comparison_cnts"
+> setMethod("boxplot_comparison_cnts", "CountsAnalysis", function(object, scale) {
++   boxplot(unlist(object@normal_cnts)^(scale), unlist(object@tumor_cnts)^(scale), 
++           names = c("Normal Counts", "Tumor Counts"),
++           main = paste(object@group,"Normal vs. Tumor Count Comparison"))
++ })
+> 
+> setGeneric("pos_boxplot_comparison_cnts", function(object, scale) standardGeneric("pos_boxplot_comparison_cnts"))
+[1] "pos_boxplot_comparison_cnts"
+> setMethod("pos_boxplot_comparison_cnts", "CountsAnalysis", function(object, scale) {
++   boxplot(unlist(object@normal_cnts_pos)^(scale), unlist(object@tumor_cnts_pos)^(scale), 
++           names = c("Normal Counts", "Tumor Counts"),
++           main = paste(object@group,"Normal vs. Tumor Positive Highly Correlated Counts Comparison"))
++ })
+> 
+> setGeneric("neg_boxplot_comparison_cnts", function(object, scale) standardGeneric("neg_boxplot_comparison_cnts"))
+[1] "neg_boxplot_comparison_cnts"
+> setMethod("neg_boxplot_comparison_cnts", "CountsAnalysis", function(object, scale) {
++   boxplot(unlist(object@normal_cnts_neg)^(scale), unlist(object@tumor_cnts_neg)^(scale), 
++           names = c("Normal Counts", "Tumor Counts"),
++           main = paste(object@group,"Normal vs. Tumor Negative Highly Correlated Counts Comparison"))
++ })
+> 
+> setGeneric("density_comparison_cnts", function(object, scale) standardGeneric("density_comparison_cnts"))
+[1] "density_comparison_cnts"
+> setMethod("density_comparison_cnts", "CountsAnalysis", function(object, scale) {
++   plot(density(
++       unlist(object@normal_cnts)^(scale)), 
++       col="blue",
++       main =paste(object@group,"Normal vs. Tumor Count Comparison"))
++   legend("topright",legend=c("Normal","Tumor"),col=c("blue","red"),lty=1,lwd=2)
++   lines(
++     density(unlist(object@tumor_cnts)^(scale)),
++     col="red")
++ })
+> 
+> setGeneric("pos_density_comparison_cnts", function(object, scale) standardGeneric("pos_density_comparison_cnts"))
+[1] "pos_density_comparison_cnts"
+> setMethod("pos_density_comparison_cnts", "CountsAnalysis", function(object, scale) {
++   plot(density(
++       unlist(object@normal_cnts_pos)^(scale)), 
++       col="blue",
++       main =paste(object@group,"Normal vs. Tumor Positive Highly Correlated Count Comparison"))
++   legend("topright",legend=c("Normal","Tumor"),col=c("blue","red"),lty=1,lwd=2)
++   lines(
++     density(unlist(object@tumor_cnts_pos)^(scale)),
++     col="red")
++ })
+> 
+> setGeneric("neg_density_comparison_cnts", function(object, scale) standardGeneric("neg_density_comparison_cnts"))
+[1] "neg_density_comparison_cnts"
+> setMethod("neg_density_comparison_cnts", "CountsAnalysis", function(object, scale) {
++   plot(density(
++       unlist(object@normal_cnts_neg)^(scale)), 
++       col="blue",
++       main =paste(object@group,"Normal vs. Tumor Negative Highly Correlated Count Comparison"))
++   legend("topright",legend=c("Normal","Tumor"),col=c("blue","red"),lty=1,lwd=2)
++   lines(
++     density(unlist(object@tumor_cnts_neg)^(scale)),
++     col="red")
++ })
+> 
+> setGeneric("boxplot_comparison_dist", function(object, scale) standardGeneric("boxplot_comparison_dist"))
+[1] "boxplot_comparison_dist"
+> setMethod("boxplot_comparison_dist", "DistancesAnalysis", function(object, scale) {
++   boxplot(unlist(object@normal_dist)^(scale), unlist(object@tumor_dist)^(scale), 
++           names = c("Normal Counts", "Tumor Counts"),
++           main = paste(object@group,"Normal vs. Tumor Distances Comparison"))
++ })
+> 
+> setGeneric("pos_boxplot_comparison_dist", function(object, scale) standardGeneric("pos_boxplot_comparison_dist"))
+[1] "pos_boxplot_comparison_dist"
+> setMethod("pos_boxplot_comparison_dist", "DistancesAnalysis", function(object, scale) {
++   boxplot(unlist(object@normal_dist_pos)^(scale), unlist(object@tumor_dist_pos)^(scale), 
++           names = c("Normal Counts", "Tumor Counts"),
++           main = paste(object@group,"Normal vs. Tumor Positive Highly Correlated Distances Comparison"))
++ })
+> 
+> setGeneric("neg_boxplot_comparison_dist", function(object, scale) standardGeneric("neg_boxplot_comparison_dist"))
+[1] "neg_boxplot_comparison_dist"
+> setMethod("neg_boxplot_comparison_dist", "DistancesAnalysis", function(object, scale) {
++   boxplot(unlist(object@normal_dist_neg)^(scale), unlist(object@tumor_dist_neg)^(scale), 
++           names = c("Normal Counts", "Tumor Counts"),
++           main = paste(object@group,"Normal vs. Tumor Negative Highly Correlated Distances Comparison"))
++ })
+> 
+> setGeneric("density_comparison_dist", function(object, scale) standardGeneric("density_comparison_dist"))
+[1] "density_comparison_dist"
+> setMethod("density_comparison_dist", "DistancesAnalysis", function(object, scale) {
++   plot(density(
++     unlist(object@normal_dist)^(scale)), 
++     col="blue",
++     main =paste(object@group,"Normal vs. Tumor Distances Comparison"))
++   legend("topright",legend=c("Normal","Tumor"),col=c("blue","red"),lty=1,lwd=2)
++   lines(
++     density(unlist(object@tumor_dist)^(scale)),
++     col="red")
++ })
+> 
+> setGeneric("pos_density_comparison_dist", function(object, scale) standardGeneric("pos_density_comparison_dist"))
+[1] "pos_density_comparison_dist"
+> setMethod("pos_density_comparison_dist", "DistancesAnalysis", function(object, scale) {
++   plot(density(
++     unlist(object@normal_dist_pos)^(scale)), 
++     col="blue",
++     main =paste(object@group,"Normal vs. Tumor Positive Highly Correlated Distances Comparison"))
++   legend("topright",legend=c("Normal","Tumor"),col=c("blue","red"),lty=1,lwd=2)
++   lines(
++     density(unlist(object@tumor_dist_pos)^(scale)),
++     col="red")
++ })
+> 
+> setGeneric("neg_density_comparison_dist", function(object, scale) standardGeneric("neg_density_comparison_dist"))
+[1] "neg_density_comparison_dist"
+> setMethod("neg_density_comparison_dist", "DistancesAnalysis", function(object, scale) {
++   plot(density(
++     unlist(object@normal_dist_neg)^(scale)), 
++     col="blue",
++     main =paste(object@group,"Normal vs. Tumor Negative Highly Correlated Distances Comparison"))
++   legend("topright",legend=c("Normal","Tumor"),col=c("blue","red"),lty=1,lwd=2)
++   lines(
++     density(unlist(object@tumor_dist_neg)^(scale)),
++     col="red")
++ })
+> 
+> setGeneric("print_summaries_cnts", function(object) standardGeneric("print_summaries_cnts"))
+[1] "print_summaries_cnts"
+> setMethod("print_summaries_cnts", "CountsAnalysis", function(object) {
++   print(paste("Distribution of",object@group,"alive counts:"))
++   print(summary(unlist(object@normal_cnts)))
++   print(paste("Distribution of",object@group,"tumor counts:"))
++   print(summary(unlist(object@tumor_cnts)))
++ })
+> 
+> setGeneric("pos_print_summaries_cnts", function(object) standardGeneric("pos_print_summaries_cnts"))
+[1] "pos_print_summaries_cnts"
+> setMethod("pos_print_summaries_cnts", "CountsAnalysis", function(object) {
++   print(paste("Distribution of",object@group,"positive highly correlated alive counts:"))
++   print(summary(unlist(object@normal_cnts_pos)))
++   print(paste("Distribution of",object@group,"positive highly correlated tumor counts:"))
++   print(summary(unlist(object@tumor_cnts_pos)))
++ })
+> 
+> setGeneric("neg_print_summaries_cnts", function(object) standardGeneric("neg_print_summaries_cnts"))
+[1] "neg_print_summaries_cnts"
+> setMethod("neg_print_summaries_cnts", "CountsAnalysis", function(object) {
++   print(paste("Distribution of",object@group,"negative highly correlated alive counts:"))
++   print(summary(unlist(object@normal_cnts_neg)))
++   print(paste("Distribution of",object@group,"negative highly correlated tumor counts:"))
++   print(summary(unlist(object@tumor_cnts_neg)))
++ })
+> 
+> setGeneric("print_summaries_dist", function(object) standardGeneric("print_summaries_dist"))
+[1] "print_summaries_dist"
+> setMethod("print_summaries_dist", "DistancesAnalysis", function(object) {
++   print(paste("Distribution of",object@group,"alive distances:"))
++   print(summary(unlist(object@normal_dist)))
++   print(paste("Distribution of",object@group,"tumor distances:"))
++   print(summary(unlist(object@tumor_dist)))
++ })
+> 
+> setGeneric("pos_print_summaries_dist", function(object) standardGeneric("pos_print_summaries_dist"))
+[1] "pos_print_summaries_dist"
+> setMethod("pos_print_summaries_dist", "DistancesAnalysis", function(object) {
++   print(paste("Distribution of",object@group,"positive highly correlated alive distances:"))
++   print(summary(unlist(object@normal_dist_pos)))
++   print(paste("Distribution of",object@group,"positive highly correlated tumor distances:"))
++   print(summary(unlist(object@tumor_dist_pos)))
++ })
+> 
+> setGeneric("neg_print_summaries_dist", function(object) standardGeneric("neg_print_summaries_dist"))
+[1] "neg_print_summaries_dist"
+> setMethod("neg_print_summaries_dist", "DistancesAnalysis", function(object) {
++   print(paste("Distribution of",object@group,"negative highly correlated alive distances:"))
++   print(summary(unlist(object@normal_dist_neg)))
++   print(paste("Distribution of",object@group,"negative highly correlated tumor distances:"))
++   print(summary(unlist(object@tumor_dist_neg)))
++ })
+> 
+> # counts plots
+> BRCA_alive_cnts <- CountsAnalysis("BRCA.alive")
+> BRCA_dead_cnts <- CountsAnalysis("BRCA.dead")
+> UCEC_alive_cnts <- CountsAnalysis("UCEC.alive")
+> UCEC_dead_cnts <- CountsAnalysis("UCEC.dead")
+> 
+> pdf("Plots/counts.boxplots.pdf",16,16)
+> par(mfrow=c(2,2))
+> boxplot_comparison_cnts(BRCA_alive_cnts, 1/4)
+> boxplot_comparison_cnts(BRCA_dead_cnts, 1/4)
+> boxplot_comparison_cnts(UCEC_alive_cnts, 1/4)
+> boxplot_comparison_cnts(UCEC_dead_cnts, 1/4)
+> par(mfrow=c(1,1))
+> dev.off()
+null device 
+          1 
+> 
+> pdf("Plots/positive.counts.boxplots.pdf",16,16)
+> par(mfrow=c(2,2))
+> pos_boxplot_comparison_cnts(BRCA_alive_cnts, 1/4)
+> pos_boxplot_comparison_cnts(BRCA_dead_cnts, 1/4)
+> pos_boxplot_comparison_cnts(UCEC_alive_cnts, 1/4)
+> pos_boxplot_comparison_cnts(UCEC_dead_cnts, 1/4)
+> par(mfrow=c(1,1))
+> dev.off()
+null device 
+          1 
+> 
+> pdf("Plots/negative.counts.boxplots.pdf",16,16)
+> par(mfrow=c(2,2))
+> neg_boxplot_comparison_cnts(BRCA_alive_cnts, 1/4)
+> neg_boxplot_comparison_cnts(BRCA_dead_cnts, 1/4)
+> neg_boxplot_comparison_cnts(UCEC_alive_cnts, 1/4)
+> neg_boxplot_comparison_cnts(UCEC_dead_cnts, 1/4)
+> par(mfrow=c(1,1))
+> dev.off()
+null device 
+          1 
+> 
+> pdf("Plots/counts.density.plots.pdf",16,16)
+> par(mfrow=c(2,2))
+> density_comparison_cnts(BRCA_alive_cnts, 1/4)
+> density_comparison_cnts(BRCA_dead_cnts, 1/4)
+> density_comparison_cnts(UCEC_alive_cnts, 1/4)
+> density_comparison_cnts(UCEC_dead_cnts, 1/4)
+> par(mfrow=c(1,1))
+> dev.off()
+null device 
+          1 
+> 
+> pdf("Plots/positive.counts.density.plots.pdf",16,16)
+> par(mfrow=c(2,2))
+> pos_density_comparison_cnts(BRCA_alive_cnts, 1/4)
+> pos_density_comparison_cnts(BRCA_dead_cnts, 1/4)
+> pos_density_comparison_cnts(UCEC_alive_cnts, 1/4)
+> pos_density_comparison_cnts(UCEC_dead_cnts, 1/4)
+> par(mfrow=c(1,1))
+> dev.off()
+null device 
+          1 
+> 
+> pdf("Plots/negative.counts.density.plots.pdf",16,16)
+> par(mfrow=c(2,2))
+> neg_density_comparison_cnts(BRCA_alive_cnts, 1/4)
+> neg_density_comparison_cnts(BRCA_dead_cnts, 1/4)
+> neg_density_comparison_cnts(UCEC_alive_cnts, 1/4)
+> neg_density_comparison_cnts(UCEC_dead_cnts, 1/4)
+> par(mfrow=c(1,1))
+> dev.off()
+null device 
+          1 
+> 
+> # summaries
+> print_summaries_cnts(BRCA_alive_cnts)
+[1] "Distribution of BRCA Alive alive counts:"
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+   0.00    0.00    0.00   16.74    1.00  573.00 
+[1] "Distribution of BRCA Alive tumor counts:"
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+  0.000   0.000   0.000   2.466   1.000 142.000 
+> print_summaries_cnts(BRCA_dead_cnts)
+[1] "Distribution of BRCA Dead alive counts:"
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+    0.0     0.0     1.0    15.7     8.0   449.0 
+[1] "Distribution of BRCA Dead tumor counts:"
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+   0.00    0.00    3.00   11.48   11.75  227.00 
+> print_summaries_cnts(UCEC_alive_cnts)
+[1] "Distribution of UCEC Alive alive counts:"
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+  0.000   0.000   1.000   2.955   3.000  82.000 
+[1] "Distribution of UCEC Alive tumor counts:"
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+   0.00    0.00    2.00   12.99   10.00  270.00 
+> print_summaries_cnts(UCEC_dead_cnts)
+[1] "Distribution of UCEC Dead alive counts:"
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+   83.0   291.0   400.0   422.5   523.0   877.0 
+[1] "Distribution of UCEC Dead tumor counts:"
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+      1      62     123     184     221     858 
+> 
+> #  positive summaries
+> pos_print_summaries_cnts(BRCA_alive_cnts)
+[1] "Distribution of BRCA Alive positive highly correlated alive counts:"
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+   0.00    0.00    0.00   16.62    1.00  573.00 
+[1] "Distribution of BRCA Alive positive highly correlated tumor counts:"
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+  0.000   0.000   0.000   2.461   1.000 142.000 
+> pos_print_summaries_cnts(BRCA_dead_cnts)
+[1] "Distribution of BRCA Dead positive highly correlated alive counts:"
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+   0.00    0.00    1.00   15.61    8.00  448.00 
+[1] "Distribution of BRCA Dead positive highly correlated tumor counts:"
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+   0.00    0.00    3.00   11.46   11.00  227.00 
+> pos_print_summaries_cnts(UCEC_alive_cnts)
+[1] "Distribution of UCEC Alive positive highly correlated alive counts:"
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+  0.000   0.000   1.000   2.879   3.000  82.000 
+[1] "Distribution of UCEC Alive positive highly correlated tumor counts:"
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+   0.00    0.00    2.00   12.81    9.00  270.00 
+> pos_print_summaries_cnts(UCEC_dead_cnts)
+[1] "Distribution of UCEC Dead positive highly correlated alive counts:"
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+   18.0   144.0   230.0   259.8   359.0   680.0 
+[1] "Distribution of UCEC Dead positive highly correlated tumor counts:"
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+    7.0   191.0   369.0   503.5   608.0  1678.0 
+> 
+> # negative summaries
+> neg_print_summaries_cnts(BRCA_alive_cnts)
+[1] "Distribution of BRCA Alive negative highly correlated alive counts:"
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+ 0.0000  0.0000  0.0000  0.1245  0.0000 53.0000 
+[1] "Distribution of BRCA Alive negative highly correlated tumor counts:"
+    Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
+0.000000 0.000000 0.000000 0.004633 0.000000 7.000000 
+> neg_print_summaries_cnts(BRCA_dead_cnts)
+[1] "Distribution of BRCA Dead negative highly correlated alive counts:"
+     Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
+  0.00000   0.00000   0.00000   0.09686   0.00000 143.00000 
+[1] "Distribution of BRCA Dead negative highly correlated tumor counts:"
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+0.00000 0.00000 0.00000 0.01706 0.00000 8.00000 
+> neg_print_summaries_cnts(UCEC_alive_cnts)
+[1] "Distribution of UCEC Alive negative highly correlated alive counts:"
+    Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
+ 0.00000  0.00000  0.00000  0.07602  0.00000 19.00000 
+[1] "Distribution of UCEC Alive negative highly correlated tumor counts:"
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+ 0.0000  0.0000  0.0000  0.1855  0.0000 77.0000 
+> neg_print_summaries_cnts(UCEC_dead_cnts)
+[1] "Distribution of UCEC Dead negative highly correlated alive counts:"
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+   16.0    88.0   131.0   162.7   204.0   681.0 
+[1] "Distribution of UCEC Dead negative highly correlated tumor counts:"
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+    7.0    60.0   115.0   161.4   189.0  1679.0 
+> 
+> # distances plots
+> BRCA_alive_dist <- DistancesAnalysis("BRCA.alive")
+> BRCA_dead_dist <- DistancesAnalysis("BRCA.dead")
+> UCEC_alive_dist <- DistancesAnalysis("UCEC.alive")
+> UCEC_dead_dist <- DistancesAnalysis("UCEC.dead")
+> 
+> pdf("Plots/distances.boxplots.pdf",16,16)
+> par(mfrow=c(2,2))
+> boxplot_comparison_dist(BRCA_alive_dist, 1/4)
+> boxplot_comparison_dist(BRCA_dead_dist, 1/4)
+> boxplot_comparison_dist(UCEC_alive_dist, 1/4)
+> boxplot_comparison_dist(UCEC_dead_dist, 1/4)
+> par(mfrow=c(1,1))
+> dev.off()
+null device 
+          1 
+> 
+> pdf("Plots/positive.distances.boxplots.pdf",16,16)
+> par(mfrow=c(2,2))
+> pos_boxplot_comparison_dist(BRCA_alive_dist, 1/4)
+> pos_boxplot_comparison_dist(BRCA_dead_dist, 1/4)
+> pos_boxplot_comparison_dist(UCEC_alive_dist, 1/4)
+> pos_boxplot_comparison_dist(UCEC_dead_dist, 1/4)
+> par(mfrow=c(1,1))
+> dev.off()
+null device 
+          1 
+> 
+> pdf("Plots/negative.distances.boxplots.pdf",16,16)
+> par(mfrow=c(2,2))
+> neg_boxplot_comparison_dist(BRCA_alive_dist, 1/4)
+> neg_boxplot_comparison_dist(BRCA_dead_dist, 1/4)
+> neg_boxplot_comparison_dist(UCEC_alive_dist, 1/4)
+> neg_boxplot_comparison_dist(UCEC_dead_dist, 1/4)
+> par(mfrow=c(1,1))
+> dev.off()
+null device 
+          1 
+> 
+> pdf("Plots/distances.density.plots.pdf",16,16)
+> par(mfrow=c(2,2))
+> density_comparison_dist(BRCA_alive_dist, 1/4)
+> density_comparison_dist(BRCA_dead_dist, 1/4)
+> density_comparison_dist(UCEC_alive_dist, 1/4)
+> density_comparison_dist(UCEC_dead_dist, 1/4)
+> par(mfrow=c(1,1))
+> dev.off()
+null device 
+          1 
+> 
+> pdf("Plots/positive.distances.density.plots.pdf",16,16)
+> par(mfrow=c(2,2))
+> pos_density_comparison_dist(BRCA_alive_dist, 1/4)
+> pos_density_comparison_dist(BRCA_dead_dist, 1/4)
+> pos_density_comparison_dist(UCEC_alive_dist, 1/4)
+> pos_density_comparison_dist(UCEC_dead_dist, 1/4)
+> par(mfrow=c(1,1))
+> dev.off()
+null device 
+          1 
+> 
+> pdf("Plots/negative.distances.density.plots.pdf",16,16)
+> par(mfrow=c(2,2))
+> neg_density_comparison_dist(BRCA_alive_dist, 1/4)
+> neg_density_comparison_dist(BRCA_dead_dist, 1/4)
+> neg_density_comparison_dist(UCEC_alive_dist, 1/4)
+> neg_density_comparison_dist(UCEC_dead_dist, 1/4)
+> par(mfrow=c(1,1))
+> dev.off()
+null device 
+          1 
+> 
+> # summaries
+> print_summaries_dist(BRCA_alive_dist)
+[1] "Distribution of BRCA Alive alive distances:"
+     Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
+        2  18274758  48270973  53796088  86874196 152125211 
+[1] "Distribution of BRCA Alive tumor distances:"
+     Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
+        2    691966  16005015  31836764  52615632 149861729 
+> print_summaries_dist(BRCA_dead_dist)
+[1] "Distribution of BRCA Dead alive distances:"
+     Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
+        2  18142761  47092166  51862141  83237542 152606431 
+[1] "Distribution of BRCA Dead tumor distances:"
+     Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
+        2   2614341  19763148  27133353  41961302 151265495 
+> print_summaries_dist(UCEC_alive_dist)
+[1] "Distribution of UCEC Alive alive distances:"
+     Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
+        2  16228348  43834423  50791071  82399065 151989226 
+[1] "Distribution of UCEC Alive tumor distances:"
+     Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
+        2  10874492  35550700  44705531  76350572 152683347 
+> print_summaries_dist(UCEC_dead_dist)
+[1] "Distribution of UCEC Dead alive distances:"
+     Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
+        2  20840074  48323212  54268338  84628403 152815683 
+[1] "Distribution of UCEC Dead tumor distances:"
+     Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
+        2  17782630  41982198  49505202  78778828 152787875 
+> 
+> # positive summaries
+> pos_print_summaries_dist(BRCA_alive_dist)
+[1] "Distribution of BRCA Alive positive highly correlated alive distances:"
+     Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
+        2  18264368  48336806  53805136  86896672 152125211 
+[1] "Distribution of BRCA Alive positive highly correlated tumor distances:"
+     Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
+        2    697428  16060507  31877907  52622340 149861729 
+> pos_print_summaries_dist(BRCA_dead_dist)
+[1] "Distribution of BRCA Dead positive highly correlated alive distances:"
+     Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
+        2  18108747  47049731  51816187  83194572 152606431 
+[1] "Distribution of BRCA Dead positive highly correlated tumor distances:"
+     Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
+        2   2607466  19759107  27131784  41961104 151265495 
+> pos_print_summaries_dist(UCEC_alive_dist)
+[1] "Distribution of UCEC Alive positive highly correlated alive distances:"
+     Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
+        2  16029334  43350608  50588998  82321992 151989226 
+[1] "Distribution of UCEC Alive positive highly correlated tumor distances:"
+     Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
+        2  10800288  35428558  44652243  76350700 152683347 
+> pos_print_summaries_dist(UCEC_dead_dist)
+[1] "Distribution of UCEC Dead positive highly correlated alive distances:"
+     Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
+        2  20365988  47878948  53738824  84093186 152815683 
+[1] "Distribution of UCEC Dead positive highly correlated tumor distances:"
+     Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
+        2  16904833  39338840  47709928  75087228 152784911 
+> 
+> # negative summaries
+> neg_print_summaries_dist(BRCA_alive_dist)
+[1] "Distribution of BRCA Alive negative highly correlated alive distances:"
+     Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
+    21054  22295914  44642549  52587792  83281525 150859388 
+[1] "Distribution of BRCA Alive negative highly correlated tumor distances:"
+     Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
+    15984     16149     16808   9980420   2015220 106761687 
+> neg_print_summaries_dist(BRCA_dead_dist)
+[1] "Distribution of BRCA Dead negative highly correlated alive distances:"
+     Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
+     9187  22144418  51916754  59266816 100145079 150862039 
+[1] "Distribution of BRCA Dead negative highly correlated tumor distances:"
+    Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
+   17039  4321951 27348624 28187733 46307869 97749532 
+> neg_print_summaries_dist(UCEC_alive_dist)
+[1] "Distribution of UCEC Alive negative highly correlated alive distances:"
+     Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
+    19255  24002548  54960969  58444104  88531525 150797717 
+[1] "Distribution of UCEC Alive negative highly correlated tumor distances:"
+     Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
+     6150  16075028  41028693  48384042  75712467 144351775 
+> neg_print_summaries_dist(UCEC_dead_dist)
+[1] "Distribution of UCEC Dead negative highly correlated alive distances:"
+     Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
+        2  21551775  49004479  55113942  85476566 152797905 
+[1] "Distribution of UCEC Dead negative highly correlated tumor distances:"
+     Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
+      250  20460444  49054474  55106329  87652372 152787875 
+> 
+> 
+> proc.time()
+   user  system elapsed 
+ 47.841   0.599  48.728 

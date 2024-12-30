@@ -1,0 +1,80 @@
+# ------------------------------------------------------------
+# This R code will calculate the counts for the following:
+# 	1. Count of high absolute correlations
+# 	2. Count of high positive correlations
+# 	3. Count of high negative correlations
+# A "high" correlation will be set as args[3] - any correlation
+# equal to or exceeding args[3] will be counted.
+# ------------------------------------------------------------
+# arg[1] - Correlation matrix filename
+# arg[2] - Output filename
+# arg[3] - Correlation level
+# ------------------------------------------------------------
+args <- commandArgs(TRUE)
+setwd("/home/bmb191/math5376D/Final.Project/Output.Files")
+
+########################## FUNCTIONS ##########################
+
+# ------------------------------------------------------------
+# Function to get counts for each row in matrix with 
+# |correlation|>=0.8
+# Write this matrix to a file in the leap server
+# ------------------------------------------------------------
+high_corr_counts <- function(corr_matrix) {
+	diag(corr_matrix) <- 0
+  	cnts <- apply(corr_matrix, 1, function(x) sum(abs(x)>=args[3]))
+  	write.table(
+  		cnts, 
+  		paste0("Correlation.Counts/",args[2]), 
+  		row.names=FALSE, 
+  		col.names=FALSE
+	)
+}
+# ------------------------------------------------------------
+# Function to get counts for each row in matrix with 
+# correlation>=0.8 (high positive correlation)
+# Write this matrix to a file in the leap server
+# ------------------------------------------------------------
+high_pos_corr_counts <- function(corr_matrix) {
+	diag(corr_matrix) <- 0
+  	cnts <- apply(corr_matrix, 1, function(x) sum(x>=args[3]))
+  	write.table(
+  		cnts, 
+  		paste0("Correlation.Counts/positive.",args[2]), 
+  		row.names=FALSE, 
+  		col.names=FALSE
+	)
+}
+# ------------------------------------------------------------
+# Function to get counts for each row in matrix with 
+# correlation<=-0.8 (high negative correlation)
+# Write this matrix to a file in the leap server
+# ------------------------------------------------------------
+neg_pos_corr_counts <- function(corr_matrix) {
+	diag(corr_matrix) <- 0
+  	cnts <- apply(corr_matrix, 1, function(x) sum(x<=(-1*as.numeric(args[3]))))
+  	write.table(
+  		cnts, 
+  		paste0("Correlation.Counts/negative.",args[2]), 
+  		row.names=FALSE, 
+  		col.names=FALSE
+	)
+}
+
+########################## CODE ##########################
+
+# ------------------------------------------------------------
+# Load in correlation data
+# ------------------------------------------------------------
+corr_matrix <- read.table(
+  paste0("Correlation.Matrices/",args[1]),
+  header=F
+)
+
+# ------------------------------------------------------------
+# Call each function for each instance of the correlation
+# matrix.
+# ------------------------------------------------------------
+high_corr_counts(corr_matrix)
+high_pos_corr_counts(corr_matrix)
+neg_pos_corr_counts(corr_matrix)

@@ -1,0 +1,34 @@
+# checking if corr matrices match
+diff /home/vbz21/math5376D/final.project/alive.normal.everything.correlations.txt /home/bmb191/math5376D/Final.Project/Output.Files/Correlation.Matrices/alive.normal.corr.matrix.Nov7.txt
+
+# getting high corr counts
+R CMD BATCH '--args alive.normal.corr.matrix.Nov7.txt alive.normal.high.corr.cnts.Nov10.txt' Scripts/get.corr.cnts.R
+
+# comparing corr counts
+R CMD BATCH '--args alive.normal.high.corr.cnts.txt madison.alive.normal.high.corr.cnt.txt compare.counts.df.txt' compare.investigation.R
+
+# looking at instances of counts that do not match
+awk '{if ($2!=$3) print $0}' compare.counts.df.txt | wc -l
+
+# mine
+[bmb191@login2 Correlation.Counts]$ head -n 329 alive.normal.high.corr.cnts.Nov10.txt | tail -n 1
+364
+# madison's
+[bmb191@login2 Correlation.Counts]$ head -n 329 madison.alive.normal.high.corr.cnt.txt | tail -n 1
+362
+
+# getting row of corr matrix and finding high corr values
+tail -n 3 alive.normal.corr.matrix.Nov7.txt | head -n 1 | awk '{for(i=1; i<=NF; i++) if($i >= 0.8 || $i <= -0.8) print $i}' | wc -l
+
+# getting row of corr matrix and finding high corr values
+[bmb191@login2 Correlation.Counts]$ head -n 329 ../Correlation.Matrices/alive.normal.corr.matrix.Nov7.txt | tail -n 1 | awk '{for(i=1; i<=NF; i++) if($i >= 0.8 || $i <= -0.8) print $i}' | wc -l
+365
+
+# getting row of madison's corr matrix and finding high corr values
+[bmb191@login2 Correlation.Counts]$ head -n 329 /home/vbz21/math5376D/final.project/alive.normal.everything.correlations.txt | tail -n 1 | awk '{for(i=1; i<=NF; i++) if($i >= 0.8 || $i <= -0.8) print $i}' | wc -l
+365
+
+# checking counts 
+awk '{s+=$2}END{print s}' /home/vbz21/math5376D/final.project/alive.normal.highcorr.rowcounts.txt
+awk '{s+=$1}END{print s}' /home/bmb191/math5376D/Final.Project/Output.Files/Correlation.Counts/positive.alive.normal.high.corr.cnts.txt
+

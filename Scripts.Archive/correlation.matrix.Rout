@@ -1,0 +1,84 @@
+
+R version 4.3.1 (2023-06-16) -- "Beagle Scouts"
+Copyright (C) 2023 The R Foundation for Statistical Computing
+Platform: x86_64-redhat-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+[Previously saved workspace restored]
+
+> setwd("/mmfs1/home/bmb191/math5376D/Final.Project")
+> 
+> # Get alive subjects' data
+> alive_normal <- read.table(
++ 	"Data/chrX9498cg.BRCA.53Alive.Normal.380355cg.75col.w.Header.txt",
++ 	header=T
++ )
+> alive_tumor <- read.table(
++ 	"Data/chrX9498cg.BRCA.53Alive.Tumor.380355cg.75col.w.Header.txt",
++ 	header=T
++ )
+> 
+> # alive normal correlation matrix
+> alive_normal_numerics <- apply(alive_normal[,5:57],1,as.numeric)
+> alive_normal_corr_matrix <- cor(alive_normal_numerics, method="spearman")
+> write.table(
++ 	alive_normal_corr_matrix, 
++ 	"Output.Files/alive.normal.corr.matrix.txt", 
++ 	row.names=FALSE, 
++ 	col.names=FALSE
++ )
+> 
+> # alive tumor correlation matrix
+> alive_tumor_numerics <- apply(alive_tumor[,5:57],1,as.numeric)
+> alive_tumor_corr_matrix <- cor(alive_tumor_numerics, method="spearman")
+> write.table(
++ 	alive_tumor_corr_matrix, 
++ 	"Output.Files/alive.tumor.corr.matrix.txt", 
++ 	row.names=FALSE, 
++ 	col.names=FALSE
++ )
+> 
+> ###############################################
+> 
+> # Get dead subjects' data
+> dead_normal <- read.table(
++ 	"Data/chrX9498cg.BRCA.32Dead.Normal.380355cg.54col.w.Header.txt", 
++ 	header=T
++ )
+> dead_tumor <- read.table(
++ 	"Data/chrX9498cg.BRCA.32Dead.Tumor.380355cg.54col.w.Header.txt", 
++ 	header=T
++ )
+> 
+> # dead normal correlation matrix
+> dead_normal_numerics <- apply(dead_normal[,5:36],1,as.numeric)
+> dead_normal_corr_matrix <- cor(dead_normal_numerics, method="spearman")
+> write.table(
++   dead_normal_corr_matrix, 
++   "Output.Files/dead.normal.corr.matrix.txt", 
++   row.names=FALSE, 
++   col.names=FALSE
++ )
+> 
+> # dead tumor correlation matrix
+> dead_tumor_numerics <- apply(dead_tumor[,5:36],1,as.numeric)
+> dead_tumor_corr_matrix <- cor(dead_tumor_numerics, method="spearman")
+> write.table(
++ 	dead_tumor_corr_matrix, 
++ 	"Output.Files/dead.tumor.corr.matrix.txt", 
++ 	row.names=FALSE, 
++ 	col.names=FALSE
++ )

@@ -1,0 +1,59 @@
+# ------------------------------------------------------------
+# Generate correlation matrices
+# ------------------------------------------------------------
+R CMD BATCH correlation.matrix.Nov16.UCEC.R
+
+# ------------------------------------------------------------
+# Generate high correlation counts
+# ------------------------------------------------------------
+R CMD BATCH '--args UCEC.alive.normal.corr.matrix.txt UCEC.alive.normal.high.corr.cnts.txt 0.8' get.corr.cnts.R
+R CMD BATCH '--args UCEC.alive.tumor.corr.matrix.txt UCEC.alive.tumor.high.corr.cnts.txt 0.8' get.corr.cnts.R
+R CMD BATCH '--args UCEC.dead.normal.corr.matrix.txt UCEC.dead.normal.high.corr.cnts.0.9.threshold.txt 0.9' get.corr.cnts.R
+R CMD BATCH '--args UCEC.dead.normal.corr.matrix.txt UCEC.dead.normal.high.corr.cnts.0.8.threshold.txt 0.8' get.corr.cnts.R
+R CMD BATCH '--args UCEC.dead.tumor.corr.matrix.txt UCEC.dead.tumor.high.corr.cnts.0.9.threshold.txt 0.9' get.corr.cnts.R
+R CMD BATCH '--args UCEC.dead.tumor.corr.matrix.txt UCEC.dead.tumor.high.corr.cnts.0.8.threshold.txt 0.8' get.corr.cnts.R
+
+# ------------------------------------------------------------
+# Generate distribution/summary statistics for each
+# correlation count matrix
+# ------------------------------------------------------------
+R CMD BATCH '--args UCEC.alive.normal.high.corr.cnts.txt UCEC.alive.normal' distribution.and.summary.statistics.R
+R CMD BATCH '--args UCEC.alive.tumor.high.corr.cnts.txt UCEC.alive.tumor' distribution.and.summary.statistics.R
+R CMD BATCH '--args UCEC.dead.normal.high.corr.cnts.txt UCEC.dead.normal' distribution.and.summary.statistics.R
+R CMD BATCH '--args UCEC.dead.tumor.high.corr.cnts.txt UCEC.dead.tumor' distribution.and.summary.statistics.R
+
+# ------------------------------------------------------------
+# Generate distance matrices
+# ------------------------------------------------------------
+R CMD BATCH '--args chrX9498cg.UCEC.26Alive.Normal.380355cg.48col.w.Header.txt UCEC.alive.normal.distance.matrix.txt' distances.analysis.R
+R CMD BATCH '--args chrX9498cg.UCEC.26Alive.Tumor.380355cg.48col.w.Header.txt UCEC.alive.tumor.distance.matrix.txt' distances.analysis.R
+R CMD BATCH '--args chrX9498cg.UCEC.7Dead.Normal.380355cg.29col.w.Header.txt UCEC.dead.normal.distance.matrix.txt' distances.analysis.R
+R CMD BATCH '--args chrX9498cg.UCEC.7Dead.Tumor.380355cg.29col.w.Header.txt UCEC.dead.tumor.distance.matrix.txt' distances.analysis.R
+
+# ------------------------------------------------------------
+# Verify the matrices are the same dim
+# ------------------------------------------------------------
+[bmb191@login1 Scripts]$ wc -l ../Output.Files/Distance.Matrices/*
+      9498 ../Output.Files/Distance.Matrices/alive.normal.distance.matrix.txt
+      9498 ../Output.Files/Distance.Matrices/alive.tumor.distance.matrix.txt
+      9498 ../Output.Files/Distance.Matrices/dead.normal.distance.matrix.txt
+      9498 ../Output.Files/Distance.Matrices/dead.tumor.distance.matrix.txt
+     37992 total
+     
+[bmb191@login1 Scripts]$ wc -l ../Output.Files/Correlation.Matrices/*
+      9498 ../Output.Files/Correlation.Matrices/alive.normal.corr.matrix.txt
+      9498 ../Output.Files/Correlation.Matrices/alive.tumor.corr.matrix.txt
+      9498 ../Output.Files/Correlation.Matrices/dead.normal.corr.matrix.txt
+      9498 ../Output.Files/Correlation.Matrices/dead.tumor.corr.matrix.txt
+     37992 total
+
+# ------------------------------------------------------------
+# Get distances of CG pairs as a vector - Updated script
+# ------------------------------------------------------------
+R CMD BATCH '--args UCEC.alive.normal.corr.matrix.txt UCEC.alive.normal.distance.matrix.txt UCEC.alive.normal.high.corr.indeces.txt UCEC.alive.normal.high.corr.distances.txt 0.8' get.high.corr.with.distances.R
+R CMD BATCH '--args UCEC.alive.tumor.corr.matrix.txt UCEC.alive.tumor.distance.matrix.txt UCEC.alive.tumor.high.corr.indeces.txt UCEC.alive.tumor.high.corr.distances.txt 0.8' get.high.corr.with.distances.R
+R CMD BATCH '--args UCEC.dead.normal.corr.matrix.txt UCEC.dead.normal.distance.matrix.txt UCEC.dead.normal.high.corr.indeces.threshold.0.8.txt UCEC.dead.normal.high.corr.distances.threshold.0.8.txt 0.8' get.high.corr.with.distances.R
+R CMD BATCH '--args UCEC.dead.normal.corr.matrix.txt UCEC.dead.normal.distance.matrix.txt UCEC.dead.normal.high.corr.indeces.threshold.0.9.txt UCEC.dead.normal.high.corr.distances.threshold.0.9.txt 0.9' get.high.corr.with.distances.R
+R CMD BATCH '--args UCEC.dead.tumor.corr.matrix.txt UCEC.dead.tumor.distance.matrix.txt UCEC.dead.tumor.high.corr.indeces.threshold.0.8.txt UCEC.dead.tumor.high.corr.distances.threshold.0.8.txt 0.8' get.high.corr.with.distances.R
+R CMD BATCH '--args UCEC.dead.tumor.corr.matrix.txt UCEC.dead.tumor.distance.matrix.txt UCEC.dead.tumor.high.corr.indeces.threshold.0.9.txt UCEC.dead.tumor.high.corr.distances.threshold.0.9.txt 0.9' get.high.corr.with.distances.R
+

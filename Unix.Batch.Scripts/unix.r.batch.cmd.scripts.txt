@@ -1,0 +1,111 @@
+# ------------------------------------------------------------
+# Generate correlation matrices
+# ------------------------------------------------------------
+R CMD BATCH correlation.matrix.Nov7.R
+
+# ------------------------------------------------------------
+# Generate high correlation counts
+# ------------------------------------------------------------
+R CMD BATCH '--args BRCA.alive.normal.corr.matrix.txt BRCA.alive.normal.high.corr.cnts.txt 0.8' get.corr.cnts.R
+R CMD BATCH '--args BRCA.alive.tumor.corr.matrix.txt BRCA.alive.tumor.high.corr.cnts.txt 0.8' get.corr.cnts.R
+R CMD BATCH '--args BRCA.dead.normal.corr.matrix.txt BRCA.dead.normal.high.corr.cnts.txt 0.8' get.corr.cnts.R
+R CMD BATCH '--args BRCA.dead.tumor.corr.matrix.txt BRCA.dead.tumor.high.corr.cnts.txt 0.8' get.corr.cnts.R
+
+# ------------------------------------------------------------
+# Generate distribution/summary statistics for each
+# correlation count matrix
+# ------------------------------------------------------------
+R CMD BATCH '--args BRCA.alive.normal.high.corr.cnts.txt alive.normal' distribution.and.summary.statistics.R
+R CMD BATCH '--args BRCA.alive.tumor.high.corr.cnts.txt alive.tumor' distribution.and.summary.statistics.R
+R CMD BATCH '--args BRCA.dead.normal.high.corr.cnts.txt dead.normal' distribution.and.summary.statistics.R
+R CMD BATCH '--args BRCA.dead.tumor.high.corr.cnts.txt dead.tumor' distribution.and.summary.statistics.R
+
+# ------------------------------------------------------------
+# Generate distance matrices
+# ------------------------------------------------------------
+R CMD BATCH '--args chrX9498cg.BRCA.53Alive.Normal.380355cg.75col.w.Header.txt BRCA.alive.normal.distance.matrix.txt' distances.analysis.R
+R CMD BATCH '--args chrX9498cg.BRCA.53Alive.Tumor.380355cg.75col.w.Header.txt BRCA.alive.tumor.distance.matrix.txt' distances.analysis.R
+R CMD BATCH '--args chrX9498cg.BRCA.32Dead.Normal.380355cg.54col.w.Header.txt BRCA.dead.normal.distance.matrix.txt' distances.analysis.R
+R CMD BATCH '--args chrX9498cg.BRCA.32Dead.Tumor.380355cg.54col.w.Header.txt BRCA.dead.tumor.distance.matrix.txt' distances.analysis.R
+
+# ------------------------------------------------------------
+# Verify the matrices are the same dim
+# ------------------------------------------------------------
+[bmb191@login1 Scripts]$ wc -l ../Output.Files/Distance.Matrices/*
+      9498 ../Output.Files/Distance.Matrices/BRCA.alive.normal.distance.matrix.txt
+      9498 ../Output.Files/Distance.Matrices/BRCA.alive.tumor.distance.matrix.txt
+      9498 ../Output.Files/Distance.Matrices/BRCA.dead.normal.distance.matrix.txt
+      9498 ../Output.Files/Distance.Matrices/BRCA.dead.tumor.distance.matrix.txt
+     37992 total
+     
+[bmb191@login1 Scripts]$ wc -l ../Output.Files/Correlation.Matrices/*
+      9498 ../Output.Files/Correlation.Matrices/BRCA.alive.normal.corr.matrix.txt
+      9498 ../Output.Files/Correlation.Matrices/BRCA.alive.tumor.corr.matrix.txt
+      9498 ../Output.Files/Correlation.Matrices/BRCA.dead.normal.corr.matrix.txt
+      9498 ../Output.Files/Correlation.Matrices/BRCA.dead.tumor.corr.matrix.txt
+     37992 total
+
+# ------------------------------------------------------------
+# Get distances of highly correlated pairs
+# ------------------------------------------------------------
+R CMD BATCH '--args BRCA.alive.normal.corr.matrix.txt BRCA.alive.normal.distance.matrix.txt BRCA.alive.normal.high.corr.distances.txt' get.corr.distances.R
+R CMD BATCH '--args BRCA.alive.tumor.corr.matrix.txt BRCA.alive.tumor.distance.matrix.txt BRCA.alive.tumor.high.corr.distances.txt' get.corr.distances.R
+R CMD BATCH '--args BRCA.dead.normal.corr.matrix.txt BRCA.dead.normal.distance.matrix.txt BRCA.dead.normal.high.corr.distances.txt' get.corr.distances.R
+R CMD BATCH '--args BRCA.dead.tumor.corr.matrix.txt BRCA.dead.tumor.distance.matrix.txt BRCA.dead.tumor.high.corr.distances.txt' get.corr.distances.R
+
+# ------------------------------------------------------------
+# Get distances of highly positive correlated pairs
+# ------------------------------------------------------------
+R CMD BATCH '--args positive.alive.BRCA.normal.corr.matrix.txt positive.BRCA.alive.normal.distance.matrix.txt positive.BRCA.alive.normal.high.corr.distances.txt' get.corr.distances.R
+R CMD BATCH '--args positive.alive.BRCA.tumor.corr.matrix.txt positive.BRCA.alive.tumor.distance.matrix.txt positive.BRCA.alive.tumor.high.corr.distances.txt' get.corr.distances.R
+R CMD BATCH '--args positive.dead.BRCA.normal.corr.matrix.txt positive.BRCA.dead.normal.distance.matrix.txt positive.BRCA.dead.normal.high.corr.distances.txt' get.corr.distances.R
+R CMD BATCH '--args positive.dead.BRCA.tumor.corr.matrix.txt positive.BRCA.dead.tumor.distance.matrix.txt positive.BRCA.dead.tumor.high.corr.distances.txt' get.corr.distances.R
+
+# ------------------------------------------------------------
+# Get distances of highly negative correlated pairs
+# ------------------------------------------------------------
+R CMD BATCH '--args negative.BRCA.alive.normal.corr.matrix.txt negative.BRCA.alive.normal.distance.matrix.txt negative.BRCA.alive.normal.high.corr.distances.txt' get.corr.distances.R
+R CMD BATCH '--args negative.BRCA.alive.tumor.corr.matrix.txt negative.BRCA.alive.tumor.distance.matrix.txt negative.BRCA.alive.tumor.high.corr.distances.txt' get.corr.distances.R
+R CMD BATCH '--args negative.BRCA.dead.normal.corr.matrix.txt negative.BRCA.dead.normal.distance.matrix.txt negative.BRCA.dead.normal.high.corr.distances.txt' get.corr.distances.R
+R CMD BATCH '--args negative.BRCA.dead.tumor.corr.matrix.txt negative.BRCA.dead.tumor.distance.matrix.txt negative.BRCA.dead.tumor.high.corr.distances.txt' get.corr.distances.R
+
+# ------------------------------------------------------------
+# Get distances of CG pairs as a vector - Updated script
+# ------------------------------------------------------------
+R CMD BATCH '--args BRCA.alive.normal.corr.matrix.txt BRCA.alive.normal.distance.matrix.txt BRCA.alive.normal.high.corr.indeces.txt BRCA.alive.normal.high.corr.distances.txt' get.high.corr.with.distances.R
+R CMD BATCH '--args BRCA.alive.tumor.corr.matrix.txt BRCA.alive.tumor.distance.matrix.txt BRCA.alive.tumor.high.corr.indeces.txt BRCA.alive.tumor.high.corr.distances.txt' get.high.corr.with.distances.R
+R CMD BATCH '--args BRCA.dead.normal.corr.matrix.txt BRCA.dead.normal.distance.matrix.txt BRCA.dead.normal.high.corr.indeces.txt BRCA.dead.normal.high.corr.distances.txt' get.high.corr.with.distances.R
+R CMD BATCH '--args BRCA.dead.tumor.corr.matrix.txt BRCA.dead.tumor.distance.matrix.txt BRCA.dead.tumor.high.corr.indeces.txt BRCA.dead.tumor.high.corr.distances.txt' get.high.corr.with.distances.R
+
+# ------------------------------------------------------------
+# Get correlation matrices with noise
+# ------------------------------------------------------------
+R CMD BATCH '--args chrX9498cg.BRCA.53Alive.Normal.380355cg.75col.w.Header.txt 5 57 BRCA.alive.normal.corr.matrix.with.noise.txt 1185' generate.noise.matrices.Nov24.R 
+R CMD BATCH '--args chrX9498cg.BRCA.53Alive.Tumor.380355cg.75col.w.Header.txt 5 57 BRCA.alive.tumor.corr.matrix.with.noise.txt 1185' generate.noise.matrices.Nov24.R 
+R CMD BATCH '--args chrX9498cg.BRCA.32Dead.Normal.380355cg.54col.w.Header.txt 5 36 BRCA.dead.normal.corr.matrix.with.noise.txt 1185' generate.noise.matrices.Nov24.R 
+R CMD BATCH '--args chrX9498cg.BRCA.32Dead.Tumor.380355cg.54col.w.Header.txt 5 36 BRCA.dead.tumor.corr.matrix.with.noise.txt 1185' generate.noise.matrices.Nov24.R 
+
+# ------------------------------------------------------------
+# Generate high correlation counts for data with noise
+# ------------------------------------------------------------
+R CMD BATCH '--args BRCA.alive.normal.corr.matrix.with.noise.txt BRCA.alive.normal.high.corr.with.noise.cnts.txt 0.8' get.corr.cnts.R
+R CMD BATCH '--args BRCA.alive.tumor.corr.matrix.with.noise.txt BRCA.alive.tumor.high.corr.with.noise.cnts.txt 0.8' get.corr.cnts.R
+R CMD BATCH '--args BRCA.dead.normal.corr.matrix.with.noise.txt BRCA.dead.normal.high.corr.with.noise.cnts.txt 0.8' get.corr.cnts.R
+R CMD BATCH '--args BRCA.dead.tumor.corr.matrix.with.noise.txt BRCA.dead.tumor.high.corr.with.noise.cnts.txt 0.8' get.corr.cnts.R
+
+# ------------------------------------------------------------
+# Get distances of highly correlated pairs for data with noise
+# ------------------------------------------------------------
+R CMD BATCH '--args BRCA.alive.normal.corr.matrix.with.noise.txt BRCA.alive.normal.distance.matrix.txt BRCA.alive.normal.high.corr.with.noise.distances.txt' get.corr.distances.R
+R CMD BATCH '--args BRCA.alive.tumor.corr.matrix.with.noise.txt BRCA.alive.tumor.distance.matrix.txt BRCA.alive.tumor.high.corr.with.noise.distances.txt' get.corr.distances.R
+R CMD BATCH '--args BRCA.dead.normal.corr.matrix.with.noise.txt BRCA.dead.normal.distance.matrix.txt BRCA.dead.normal.high.corr.with.noise.distances.txt' get.corr.distances.R
+R CMD BATCH '--args BRCA.dead.tumor.corr.matrix.with.noise.txt BRCA.dead.tumor.distance.matrix.txt BRCA.dead.tumor.high.corr.with.noise.distances.txt' get.corr.distances.R
+
+# ------------------------------------------------------------
+# Get scatterplots for noise data vs. original data
+# ------------------------------------------------------------
+R CMD BATCH '--args BRCA.alive.normal.high.corr.cnts.txt BRCA.alive.normal.high.corr.with.noise.cnts.txt BRCA.alive.normal.highly.corr.cnts.scatterplot.with.noise BRCA Alive Normal' generate.noise.plots.R
+R CMD BATCH '--args BRCA.alive.tumor.high.corr.cnts.txt BRCA.alive.tumor.high.corr.with.noise.cnts.txt BRCA.alive.tumor.highly.corr.cnts.scatterplot.with.noise BRCA Alive Tumor' generate.noise.plots.R
+R CMD BATCH '--args BRCA.dead.normal.high.corr.cnts.txt BRCA.dead.normal.high.corr.with.noise.cnts.txt BRCA.dead.normal.highly.corr.cnts.scatterplot.with.noise BRCA Dead Normal' generate.noise.plots.R
+R CMD BATCH '--args BRCA.dead.tumor.high.corr.cnts.txt BRCA.dead.tumor.high.corr.with.noise.cnts.txt BRCA.dead.tumor.highly.corr.cnts.scatterplot.with.noise BRCA Dead Tumor' generate.noise.plots.R
+

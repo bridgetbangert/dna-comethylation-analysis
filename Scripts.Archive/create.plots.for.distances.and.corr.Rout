@@ -1,0 +1,475 @@
+
+R version 4.3.1 (2023-06-16) -- "Beagle Scouts"
+Copyright (C) 2023 The R Foundation for Statistical Computing
+Platform: x86_64-redhat-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+[Previously saved workspace restored]
+
+> setwd("/home/bmb191/math5376D/Final.Project/Output.Files")
+> 
+> # ----------------------------------------------------
+> 
+> brca_a_t <- read.table("Correlation.Distances/BRCA.alive.tumor.high.corr.distances.txt",header=FALSE)
+> brca_a_n <- read.table("Correlation.Distances/BRCA.alive.normal.high.corr.distances.txt",header=FALSE)
+> brca_d_t <- read.table("Correlation.Distances/BRCA.dead.tumor.high.corr.distances.txt",header=FALSE)
+> brca_d_n <- read.table("Correlation.Distances/BRCA.dead.normal.high.corr.distances.txt",header=FALSE)
+> 
+> ucec_a_t <- read.table("Correlation.Distances/UCEC.alive.tumor.high.corr.distances.txt",header=FALSE)
+> ucec_a_n <- read.table("Correlation.Distances/UCEC.alive.normal.high.corr.distances.txt",header=FALSE)
+> ucec_d_t <- read.table("Correlation.Distances/UCEC.dead.tumor.high.corr.distances.threshold.0.9.txt",header=FALSE)
+> ucec_d_n <- read.table("Correlation.Distances/UCEC.dead.normal.high.corr.distances.threshold.0.8.txt",header=FALSE)
+> 
+> # ----------------------------------------------------
+> 
+> brca_corr_cnts_at <- read.table("Correlation.Counts/BRCA.alive.tumor.high.corr.cnts.txt",header=FALSE)
+> brca_corr_cnts_an <- read.table("Correlation.Counts/BRCA.alive.normal.high.corr.cnts.txt",header=FALSE)
+> brca_corr_cnts_dt <- read.table("Correlation.Counts/BRCA.dead.tumor.high.corr.cnts.txt",header=FALSE)
+> brca_corr_cnts_dn <- read.table("Correlation.Counts/BRCA.dead.normal.high.corr.cnts.txt",header=FALSE)
+> 
+> ucec_corr_cnts_at <- read.table("Correlation.Counts/UCEC.alive.tumor.high.corr.cnts.txt",header=FALSE)
+> ucec_corr_cnts_an <- read.table("Correlation.Counts/UCEC.alive.normal.high.corr.cnts.txt",header=FALSE)
+> ucec_corr_cnts_dt <- read.table("Correlation.Counts/UCEC.dead.tumor.high.corr.cnts.0.9.threshold.txt",header=FALSE)
+> ucec_corr_cnts_dn <- read.table("Correlation.Counts/UCEC.dead.normal.high.corr.cnts.0.8.threshold.txt",header=FALSE)
+> 
+> # ----------------------------------------------------
+> 
+> brca_a_t <- apply(brca_a_t, 2, as.numeric)
+> brca_a_n <- apply(brca_a_n, 2, as.numeric)
+> brca_d_t <- apply(brca_d_t, 2, as.numeric)
+> brca_d_n <- apply(brca_d_n, 2, as.numeric)
+> 
+> ucec_a_t <- apply(ucec_a_t, 2, as.numeric)
+> ucec_a_n <- apply(ucec_a_n, 2, as.numeric)
+> ucec_d_t <- apply(ucec_d_t, 2, as.numeric)
+> ucec_d_n <- apply(ucec_d_n, 2, as.numeric)
+> 
+> # ----------------------------------------------------
+> 
+> brca_corr_cnts_at <- apply(brca_corr_cnts_at, 2, as.numeric)
+> brca_corr_cnts_an <- apply(brca_corr_cnts_an, 2, as.numeric)
+> brca_corr_cnts_dt <- apply(brca_corr_cnts_dt, 2, as.numeric)
+> brca_corr_cnts_dn <- apply(brca_corr_cnts_dn, 2, as.numeric)
+> 
+> ucec_corr_cnts_at <- apply(ucec_corr_cnts_at, 2, as.numeric)
+> ucec_corr_cnts_an <- apply(ucec_corr_cnts_an, 2, as.numeric)
+> ucec_corr_cnts_dt <- apply(ucec_corr_cnts_dt, 2, as.numeric)
+> ucec_corr_cnts_dn <- apply(ucec_corr_cnts_dn, 2, as.numeric)
+> 
+> # ----------------------------------------------------
+> 
+> sum(brca_corr_cnts_an)
+[1] 159030
+> sum(brca_corr_cnts_at)
+[1] 23418
+> sum(brca_corr_cnts_dn)
+[1] 149162
+> sum(brca_corr_cnts_dt)
+[1] 109040
+> 
+> sum(ucec_corr_cnts_an)
+[1] 28066
+> sum(ucec_corr_cnts_at)
+[1] 123394
+> sum(ucec_corr_cnts_dn)
+[1] 4012554
+> sum(ucec_corr_cnts_dt)
+[1] 1747948
+> 
+> # ----------------------------------------------------
+> 
+> summary(brca_a_n)
+       V1           
+ Min.   :        2  
+ 1st Qu.: 18274758  
+ Median : 48270973  
+ Mean   : 53796088  
+ 3rd Qu.: 86874196  
+ Max.   :152125211  
+> summary(brca_a_t)
+       V1           
+ Min.   :        2  
+ 1st Qu.:   691966  
+ Median : 16005015  
+ Mean   : 31836764  
+ 3rd Qu.: 52615632  
+ Max.   :149861729  
+> summary(brca_d_n)
+       V1           
+ Min.   :        2  
+ 1st Qu.: 18142761  
+ Median : 47092166  
+ Mean   : 51862141  
+ 3rd Qu.: 83237542  
+ Max.   :152606431  
+> summary(brca_d_t)
+       V1           
+ Min.   :        2  
+ 1st Qu.:  2614341  
+ Median : 19763148  
+ Mean   : 27133353  
+ 3rd Qu.: 41961302  
+ Max.   :151265495  
+> 
+> summary(ucec_a_n)
+       V1           
+ Min.   :        2  
+ 1st Qu.: 16228348  
+ Median : 43834423  
+ Mean   : 50791071  
+ 3rd Qu.: 82399065  
+ Max.   :151989226  
+> summary(ucec_a_t)
+       V1           
+ Min.   :        2  
+ 1st Qu.: 10874492  
+ Median : 35550700  
+ Mean   : 44705531  
+ 3rd Qu.: 76350572  
+ Max.   :152683347  
+> summary(ucec_d_n)
+       V1           
+ Min.   :        2  
+ 1st Qu.: 20840074  
+ Median : 48323212  
+ Mean   : 54268338  
+ 3rd Qu.: 84628403  
+ Max.   :152815683  
+> summary(ucec_d_t)
+       V1           
+ Min.   :        2  
+ 1st Qu.: 16122980  
+ Median : 37968864  
+ Mean   : 47181600  
+ 3rd Qu.: 75135441  
+ Max.   :152784801  
+> 
+> # ----------------------------------------------------
+> 
+> pdf("Plots/BRCA.alive.high.corr.distance.density.plot.pdf")
+> plot(density(brca_a_t^(1/4)),
++     xlim=c(0,120),
++     ylim=c(0,0.035),
++     col="red",
++     main="Distances between highly correlated CG sites (BRCA Alive)"
++ )
+> legend("topright", legend=c("Normal","Tumor"), fill=c("blue","red"))
+> lines(density(brca_a_n^(1/4)),
++   xlim=c(0,2.5),
++   ylim=c(0,3),
++   col="blue"
++ )
+> dev.off()
+null device 
+          1 
+> 
+> pdf("Plots/UCEC.alive.high.corr.distance.density.plot.pdf")
+> plot(density(ucec_a_t^(1/4)),
++     xlim=c(0,120),
++     ylim=c(0,0.035),
++     col="red",
++     main="Distances between highly correlated CG sites (UCEC Alive)"
++ )
+> legend("topright", legend=c("Normal","Tumor"), fill=c("blue","red"))
+> lines(density(ucec_a_n^(1/4)),
++   xlim=c(0,2.5),
++   ylim=c(0,3),
++   col="blue"
++ )
+> dev.off()
+null device 
+          1 
+> 
+> # ----------------------------------------------------
+> 
+> pdf("Plots/BRCA.dead.high.corr.distance.density.plot.pdf")
+> plot(density(brca_d_t^(1/4)),
++   xlim=c(0,120),
++   ylim=c(0,0.035),
++   col="red",
++   main="Fourth Root Distances between highly correlated CG sites (Dead)"
++ )
+> legend("topright", legend=c("Normal","Tumor"), fill=c("blue","red"))
+> lines(density(brca_d_n^(1/4)),
++   xlim=c(0,2.5),
++   ylim=c(0,3),
++   col="blue"
++ )
+> dev.off()
+null device 
+          1 
+> 
+> pdf("Plots/UCEC.dead.high.corr.distance.density.plot.pdf")
+> plot(density(ucec_d_t^(1/4)),
++   xlim=c(0,120),
++   ylim=c(0,0.035),
++   col="red",
++   main="Fourth Root Distances between highly correlated CG sites (Dead)"
++ )
+> legend("topright", legend=c("Normal","Tumor"), fill=c("blue","red"))
+> lines(density(ucec_d_n^(1/4)),
++   xlim=c(0,2.5),
++   ylim=c(0,3),
++   col="blue"
++ )
+> dev.off()
+null device 
+          1 
+> 
+> # ----------------------------------------------------
+> 
+> brca_a_t <- read.table("Correlation.Distances/BRCA.alive.tumor.high.corr.distances.txt",header=FALSE)
+> brca_a_n <- read.table("Correlation.Distances/BRCA.alive.normal.high.corr.distances.txt",header=FALSE)
+> brca_d_t <- read.table("Correlation.Distances/BRCA.dead.normal.high.corr.distances.txt",header=FALSE)
+> brca_d_n <- read.table("Correlation.Distances/BRCA.dead.tumor.high.corr.distances.txt",header=FALSE)
+> 
+> ucec_a_t <- read.table("Correlation.Distances/UCEC.alive.tumor.high.corr.distances.txt",header=FALSE)
+> ucec_a_n <- read.table("Correlation.Distances/UCEC.alive.normal.high.corr.distances.txt",header=FALSE)
+> ucec_d_t <- read.table("Correlation.Distances/UCEC.dead.normal.high.corr.distances.txt",header=FALSE)
+> ucec_d_n <- read.table("Correlation.Distances/UCEC.dead.tumor.high.corr.distances.txt",header=FALSE)
+> 
+> # ----------------------------------------------------
+> 
+> brca_a_n <- cbind(as.numeric(as.character(brca_a_n$V1)), "Normal")
+> brca_a_t <- cbind(as.numeric(as.character(brca_a_t$V1)), "Tumor")
+> 
+> ucec_a_n <- cbind(as.numeric(as.character(ucec_a_n$V1)), "Normal")
+> ucec_a_t <- cbind(as.numeric(as.character(ucec_a_t$V1)), "Tumor")
+> 
+> brca_a_dist_df <- data.frame(rbind(brca_a_n, brca_a_t))
+> colnames(brca_a_dist_df) <- c("Distance", "Group")
+> 
+> ucec_a_dist_df <- data.frame(rbind(ucec_a_n, ucec_a_t))
+> colnames(ucec_a_dist_df) <- c("Distance", "Group")
+> 
+> brca_a_dist_df$Distance <- as.numeric(as.character(brca_a_dist_df$Distance))
+> brca_a_dist_df$Group <- as.factor(brca_a_dist_df$Group)
+> 
+> ucec_a_dist_df$Distance <- as.numeric(as.character(ucec_a_dist_df$Distance))
+> ucec_a_dist_df$Group <- as.factor(ucec_a_dist_df$Group)
+> 
+> pdf("Plots/BRCA.alive.high.corr.distance.boxplot.pdf")
+> boxplot(
++   Distance ~ Group,
++   data = brca_a_dist_df,
++   main = "Distances between highly correlated CG sites (BRCA Alive)"
++ )
+> dev.off()
+null device 
+          1 
+> 
+> pdf("Plots/UCEC.alive.high.corr.distance.boxplot.pdf")
+> boxplot(
++   Distance ~ Group,
++   data = ucec_a_dist_df,
++   main = "Distances between highly correlated CG sites (UCEC Alive)"
++ )
+> dev.off()
+null device 
+          1 
+> 
+> # ----------------------------------------------------
+> 
+> brca_d_n <- cbind(as.numeric(as.character(brca_d_n$V1)), "Normal")
+> brca_d_t <- cbind(as.numeric(as.character(brca_d_t$V1)), "Tumor")
+> 
+> brca_d_dist_df <- data.frame(rbind(brca_d_n, brca_d_t))
+> colnames(brca_d_dist_df) <- c("Distance", "Group")
+> 
+> brca_d_dist_df$Distance <- as.numeric(as.character(brca_d_dist_df$Distance))
+> brca_d_dist_df$Group <- as.factor(brca_d_dist_df$Group)
+> 
+> pdf("Plots/BRCA.dead.high.corr.distance.boxplot.pdf")
+> boxplot(
++   Distance ~ Group,
++   data = brca_d_dist_df,
++   main = "Distances between highly correlated CG sites (BRCA Dead)"
++ )
+> dev.off()
+null device 
+          1 
+> 
+> ucec_d_n <- cbind(as.numeric(as.character(ucec_d_n$V1)), "Normal")
+> ucec_d_t <- cbind(as.numeric(as.character(ucec_d_t$V1)), "Tumor")
+> 
+> ucec_d_dist_df <- data.frame(rbind(ucec_d_n, ucec_d_t))
+> colnames(ucec_d_dist_df) <- c("Distance", "Group")
+> 
+> ucec_d_dist_df$Distance <- as.numeric(as.character(ucec_d_dist_df$Distance))
+> ucec_d_dist_df$Group <- as.factor(ucec_d_dist_df$Group)
+> 
+> pdf("Plots/UCEC.dead.high.corr.distance.boxplot.pdf")
+> boxplot(
++   Distance ~ Group,
++   data = ucec_d_dist_df,
++   main = "Distances between highly correlated CG sites (UCEC Dead)"
++ )
+> dev.off()
+null device 
+          1 
+> 
+> # ----------------------------------------------------
+> 
+> pdf("Plots/BRCA.alive.high.corr.counts.density.plot.pdf")
+> plot(density(brca_corr_cnts_an^(1/4)),
++   xlim=c(-.25,3),
++   ylim=c(0,3),
++   col="red",
++   main="Fourth Root Counts of highly correlated CG sites (BRCA Alive)"
++ )
+> legend("topright", legend=c("Normal","Tumor"), fill=c("red","blue"))
+> lines(density(brca_corr_cnts_at^(1/4)), col="blue")
+> dev.off()
+null device 
+          1 
+> 
+> pdf("Plots/UCEC.alive.high.corr.counts.density.plot.pdf")
+> plot(density(ucec_corr_cnts_an^(1/4)),
++   xlim=c(-.25,3),
++   ylim=c(0,3),
++   col="red",
++   main="Fourth Root Counts of highly correlated CG sites (UCEC Alive)"
++ )
+> legend("topright", legend=c("Normal","Tumor"), fill=c("red","blue"))
+> lines(density(ucec_corr_cnts_at^(1/4)), col="blue")
+> dev.off()
+null device 
+          1 
+> 
+> # ----------------------------------------------------
+> 
+> pdf("Plots/BRCA.dead.high.corr.counts.density.plot.pdf")
+> plot(
++   density(brca_corr_cnts_dn^(1/4)),
++   xlim=c(-.25,3),
++   ylim=c(0,3),
++   col="red",
++   main="Fourth root counts of highly correlated CG sites (BRCA Dead)"
++ )
+> legend("topright", legend=c("Normal","Tumor"), fill=c("red","blue"))
+> lines(density(brca_corr_cnts_dt^(1/4)),col="blue")
+> dev.off()
+null device 
+          1 
+> 
+> pdf("Plots/UCEC.dead.high.corr.counts.density.plot.pdf")
+> plot(
++   density(ucec_corr_cnts_dn^(1/4)),
++   xlim=c(-.25,3),
++   ylim=c(0,3),
++   col="red",
++   main="Fourth root counts of highly correlated CG sites (Dead)"
++ )
+> legend("topright", legend=c("Normal","Tumor"), fill=c("red","blue"))
+> lines(density(ucec_corr_cnts_dt^(1/4)),col="blue")
+> dev.off()
+null device 
+          1 
+> 
+> # ----------------------------------------------------
+> 
+> brca_noise_corr_an <- read.table("Correlation.Distances/BRCA.alive.normal.high.corr.with.noise.distances.txt",header=FALSE)
+> brca_noise_dist_at <- read.table("Correlation.Distances/BRCA.alive.tumor.high.corr.with.noise.distances.txt",header=FALSE)
+> brca_noise_dist_dt <- read.table("Correlation.Distances/BRCA.dead.tumor.high.corr.with.noise.distances.txt",header=FALSE)
+> brca_noise_dist_dn <- read.table("Correlation.Distances/BRCA.dead.normal.high.corr.with.noise.distances.txt",header=FALSE)
+> 
+> brca_noise_corr_dist_an <- read.table("Correlation.Distances/BRCA.alive.normal.high.corr.with.noise.distances.txt",header=FALSE)
+> brca_noise_corr_dist_at <- read.table("Correlation.Distances/BRCA.alive.tumor.high.corr.with.noise.distances.txt",header=FALSE)
+> brca_noise_corr_dist_dt <- read.table("Correlation.Distances/BRCA.dead.tumor.high.corr.with.noise.distances.txt",header=FALSE)
+> brca_noise_corr_dist_dn <- read.table("Correlation.Distances/BRCA.dead.normal.high.corr.with.noise.distances.txt",header=FALSE)
+> 
+> # ----------------------------------------------------
+> 
+> brca_noise_an <- cbind(as.numeric(as.character(brca_noise_corr_dist_an$V1)), "Normal")
+> brca_noise_at <- cbind(as.numeric(as.character(brca_noise_corr_dist_at$V1)), "Tumor")
+> 
+> brca_noise_a_dist_df <- data.frame(rbind(brca_noise_an, brca_noise_at))
+> colnames(brca_noise_a_dist_df) <- c("Distance", "Group")
+> 
+> brca_noise_a_dist_df$Distance <- as.numeric(as.character(brca_noise_a_dist_df$Distance))
+> brca_noise_a_dist_df$Group <- as.factor(brca_noise_a_dist_df$Group)
+> 
+> pdf("Plots/BRCA.cg.site.distances.boxplot.with.noise.pdf")
+> boxplot(
++   Distance ~ Group,
++   data = brca_noise_a_dist_df,
++   main = "Distances between all highly correlated CG sites with added noise (BRCA Alive)"
++ )
+> 
+> brca_noise_dn <- cbind(as.numeric(as.character(brca_noise_corr_dist_dn$V1)), "Normal")
+> brca_noise_dt <- cbind(as.numeric(as.character(brca_noise_corr_dist_dt$V1)), "Tumor")
+> 
+> brca_noise_d_dist_df <- data.frame(rbind(brca_noise_dn, brca_noise_dt))
+> colnames(brca_noise_d_dist_df) <- c("Distance", "Group")
+> 
+> brca_noise_d_dist_df$Distance <- as.numeric(as.character(brca_noise_d_dist_df$Distance))
+> brca_noise_d_dist_df$Group <- as.factor(brca_noise_d_dist_df$Group)
+> 
+> boxplot(
++   Distance ~ Group,
++   data = brca_noise_d_dist_df,
++   main = "Distances between all highly correlated CG sites with added noise (BRCA dead)"
++ )
+> dev.off()
+null device 
+          1 
+> 
+> # ----------------------------------------------------
+> 
+> summary(brca_noise_corr_dist_an)
+       V1           
+ Min.   :        0  
+ 1st Qu.:  8068352  
+ Median : 35788926  
+ Mean   : 48068420  
+ 3rd Qu.: 83325200  
+ Max.   :152125211  
+> summary(brca_noise_corr_dist_at)
+       V1           
+ Min.   :        0  
+ 1st Qu.:        0  
+ Median :      193  
+ Mean   : 17614281  
+ 3rd Qu.: 21116052  
+ Max.   :149861729  
+> summary(brca_noise_corr_dist_dt)
+       V1           
+ Min.   :        0  
+ 1st Qu.:   322442  
+ Median : 13182382  
+ Mean   : 23107726  
+ 3rd Qu.: 35582042  
+ Max.   :151265495  
+> summary(brca_noise_corr_dist_dn)
+       V1           
+ Min.   :        0  
+ 1st Qu.:  8373957  
+ Median : 34966581  
+ Mean   : 46003525  
+ 3rd Qu.: 80537916  
+ Max.   :152606431  
+> 
+> # ----------------------------------------------------
+> 
+> pdf("Plots/BRCA.alive.cg.site.distances.density.plots.with.noise.pdf")
+> plot(
++   density(brca_noise_an),
++   col="red",
++   main="Distribution of all highly correlated CG site distances with added noise (BRCA alive)"
++ )
+Error in density.default(brca_noise_an) : argument 'x' must be numeric
+Calls: plot -> density -> density.default
+Execution halted
