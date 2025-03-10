@@ -1,5 +1,8 @@
 # DNA Co-Methylation Analysis in Breast and Endometrial Cancer
 
+[View the full report here](./Glenwinkel_Bangert_ChrX_Final_Report.pdf)  <!-- If the file is in the root directory -->
+
+
 ## Overview
 This project investigates DNA co-methylation patterns on the X chromosome in breast cancer (BRCA) and endometrial cancer (UCEC) samples. DNA methylation (DNAm) is an epigenetic mechanism involving the addition of a methyl group to cytosine at CpG sites, which can impact gene expression. Previous studies have highlighted unique methylation patterns on the X chromosome, suggesting a potential role in cancer progression. Our study builds upon this research by analyzing within-sample (WS) co-methylation patterns in matched normal and tumor samples from both alive and deceased individuals.
 
