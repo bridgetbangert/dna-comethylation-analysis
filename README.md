@@ -35,7 +35,6 @@ Epigenetic changes, including DNAm, play a critical role in cancer development a
 
 ## Tools & Technologies
 - **Programming Language:** R
-- **Libraries Used:** Bioconductor, ggplot2, dplyr, and other statistical/machine learning packages.
 
 ## Future Directions
 - Extend analyses to autosomal chromosomes, particularly chromosome 22, to compare patterns of negative correlation.
